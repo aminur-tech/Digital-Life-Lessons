@@ -57,31 +57,29 @@ const AddLesson = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-800 rounded shadow-md">
-      <title>Add lesson</title>
-      <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-        Create New Life Lesson
-      </h2>
+    <div className="max-w-3xl mx-auto p-6 bg-base-100 text-base-content rounded shadow-md">
+      <title>Add Lesson</title>
+      <h2 className="text-2xl font-bold mb-4">Create New Life Lesson</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Lesson Title */}
         <input
           type="text"
           placeholder="Lesson Title"
           {...register("title", { required: true })}
-          className="input input-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+          className="input input-bordered w-full"
         />
 
+        {/* Description */}
         <textarea
           placeholder="Full Description / Story / Insight"
           {...register("description", { required: true })}
-          className="textarea textarea-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+          className="textarea textarea-bordered w-full"
           rows={6}
         />
 
-        <select
-          {...register("category")}
-          className="select select-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-        >
+        {/* Category */}
+        <select {...register("category")} className="select select-bordered w-full">
           <option value="">Select Category</option>
           <option value="Personal Growth">Personal Growth</option>
           <option value="Career">Career</option>
@@ -90,10 +88,8 @@ const AddLesson = () => {
           <option value="Mistakes Learned">Mistakes Learned</option>
         </select>
 
-        <select
-          {...register("tone")}
-          className="select select-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-        >
+        {/* Emotional Tone */}
+        <select {...register("tone")} className="select select-bordered w-full">
           <option value="">Select Emotional Tone</option>
           <option value="Motivational">Motivational</option>
           <option value="Sad">Sad</option>
@@ -101,38 +97,37 @@ const AddLesson = () => {
           <option value="Gratitude">Gratitude</option>
         </select>
 
+        {/* Image Upload */}
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
-          className="file-input file-input-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+          className="file-input file-input-bordered w-full"
         />
 
-        <select
-          {...register("privacy")}
-          className="select select-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-        >
+        {/* Privacy */}
+        <select {...register("privacy")} className="select select-bordered w-full">
           <option value="Public">Public</option>
           <option value="Private">Private</option>
         </select>
 
+        {/* Access Level */}
         <select
           {...register("accessLevel")}
-          className="select select-bordered w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+          className="select select-bordered w-full"
           disabled={isPremium === false}
         >
           <option value="Free">Free</option>
           <option value="Premium">Premium</option>
         </select>
 
-        <button
-          type="submit"
-          className="btn btn-primary w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white"
-        >
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-primary w-full">
           Create Lesson
         </button>
       </form>
     </div>
+
   );
 };
 

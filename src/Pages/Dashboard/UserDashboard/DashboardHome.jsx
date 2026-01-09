@@ -66,26 +66,26 @@ const DashboardHome = () => {
   }, [axiosSecure, user]);
 
   return (
-    <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100 transition-colors">
+    <div className="p-6 bg-base-200 dark:bg-base-300 min-h-screen text-base-content transition-colors">
       <title>Dashboard</title>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard title="Total Lessons" value={stats.totalLessons} color="bg-blue-500" />
-        <StatCard title="Total Favorites" value={stats.totalFavorites} color="bg-green-500" />
-        <StatCard title="Recent Lessons" value={stats.recentLessons.length} color="bg-yellow-500" />
-        <StatCard title="Quick Actions" value="..." color="bg-purple-500" />
+        <StatCard title="Total Lessons" value={stats.totalLessons} color="bg-primary" />
+        <StatCard title="Total Favorites" value={stats.totalFavorites} color="bg-success" />
+        <StatCard title="Recent Lessons" value={stats.recentLessons.length} color="bg-warning" />
+        <StatCard title="Quick Actions" value="..." color="bg-secondary" />
       </div>
 
       {/* Recent Lessons */}
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">Recently Added Lessons</h2>
-        <ul className="bg-white dark:bg-gray-800 shadow rounded p-4">
+        <ul className="bg-base-100 dark:bg-base-200 shadow rounded p-4">
           {stats.recentLessons.map((lesson) => (
             <li
               key={lesson._id}
-              className="py-2 border-b last:border-b-0 border-gray-200 dark:border-gray-700"
+              className="py-2 border-b last:border-b-0 border-base-300"
             >
               <span className="font-medium">{lesson.title}</span> -{" "}
               {new Date(lesson.createdAt).toLocaleDateString()}
@@ -95,19 +95,30 @@ const DashboardHome = () => {
       </div>
 
       {/* Weekly Contributions Chart */}
-      <div className="p-4 bg-white dark:bg-gray-800 shadow rounded">
+      <div className="p-4 bg-base-100 dark:bg-base-200 shadow rounded">
         <h2 className="text-2xl font-semibold mb-3">Weekly Contributions</h2>
         <ResponsiveContainer width="100%" height={250}>
           <LineChart data={stats.weeklyContributions}>
             <CartesianGrid strokeDasharray="3 3" stroke={themeColors().grid} />
             <XAxis dataKey="date" stroke={themeColors().text} />
             <YAxis stroke={themeColors().text} />
-            <Tooltip contentStyle={{ backgroundColor: themeColors().tooltipBg, color: themeColors().tooltipText }} />
-            <Line type="monotone" dataKey="lessons" stroke="#8884d8" strokeWidth={2} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: themeColors().tooltipBg,
+                color: themeColors().tooltipText,
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="lessons"
+              stroke={themeColors().line}
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
     </div>
+
   );
 };
 

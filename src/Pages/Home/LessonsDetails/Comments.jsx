@@ -68,21 +68,23 @@ const Comments = ({ lessonId }) => {
 
   return (
     <div className="space-y-6">
-      {/* Add Comment */}
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-colors">
+      {/* Add Comment Card */}
+      <div className="bg-base-100 shadow-xl rounded-2xl p-6 border border-base-300 transition-all duration-300">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Write a comment..."
-          className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 w-full resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+          className="textarea textarea-bordered w-full bg-base-200 text-base-content focus:textarea-primary resize-none text-base"
           rows={3}
         />
-        <button
-          onClick={handleSubmit}
-          className="mt-3 px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-        >
-          Post Comment
-        </button>
+        <div className="flex justify-end mt-3">
+          <button
+            onClick={handleSubmit}
+            className="btn btn-primary px-8"
+          >
+            Post Comment
+          </button>
+        </div>
       </div>
 
       {/* Comment List */}
@@ -90,102 +92,115 @@ const Comments = ({ lessonId }) => {
         {comments.map((c) => {
           const liked = c.likes?.includes(user?.email);
           return (
-            <div key={c._id} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600 transition-colors">
-              {/* Direct Comment */}
-              <div className="flex items-start gap-3">
-                <img
-                  src={c.userImage || `https://ui-avatars.com/api/?name=${c.userName}`}
-                  alt={c.userName}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+            <div key={c._id} className="bg-base-100 p-5 rounded-2xl shadow-sm border border-base-200 transition-all">
+
+              {/* Main Comment Row */}
+              <div className="flex items-start gap-4">
+                <div className="avatar">
+                  <div className="w-11 h-11 rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2">
+                    <img
+                      src={c.userImage || `https://ui-avatars.com/api/?name=${c.userName}`}
+                      alt={c.userName}
+                    />
+                  </div>
+                </div>
+
                 <div className="flex-1">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold text-gray-800 dark:text-gray-100">{c.userName}</p>
+                    <p className="font-bold text-base-content">{c.userName}</p>
                     {user?.email === c.userEmail && (
                       <button
                         onClick={() => handleDelete(c._id, c.userEmail)}
-                        className="text-red-500 hover:text-red-600"
+                        className="btn btn-ghost btn-xs text-error hover:bg-error/10"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     )}
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 mt-1">{c.comment}</p>
 
-                  {/* Like / Reply Buttons */}
-                  <div className="flex gap-3 mt-2 items-center">
+                  <p className="text-base-content/80 mt-1 leading-relaxed">{c.comment}</p>
+
+                  {/* Interaction Row */}
+                  <div className="flex gap-4 mt-3 items-center">
                     <button
                       onClick={() => toggleLike(c._id)}
-                      className={`flex items-center gap-1 text-sm ${liked ? "text-red-500" : "text-gray-500 dark:text-gray-300"}`}
+                      className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${liked ? "text-error" : "text-base-content/60 hover:text-primary"
+                        }`}
                     >
-                      <Heart className="w-4 h-4" />
+                      <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
                       <span>{c.likes?.length || 0}</span>
                     </button>
 
                     <button
                       onClick={() => setReplyOpen(c._id)}
-                      className="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800"
+                      className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                     >
                       <MessageCircle className="w-4 h-4" /> Reply
                     </button>
                   </div>
 
-                  {/* Reply input */}
+                  {/* Reply Input Area */}
                   {replyOpen === c._id && (
-                    <div className="mt-2 flex flex-col space-y-2 ml-12">
+                    <div className="mt-4 flex flex-col gap-2 pl-4 border-l-2 border-base-300">
                       <textarea
                         value={replyText}
                         onChange={(e) => setReplyText(e.target.value)}
-                        placeholder="Write your reply..."
-                        className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                        placeholder="Write a reply..."
+                        className="textarea textarea-sm textarea-bordered w-full bg-base-200 focus:textarea-secondary"
                         rows={2}
                       />
-                      <button
-                        onClick={() => handleReply(c._id)}
-                        className="px-4 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
-                      >
-                        Reply
-                      </button>
+                      <div className="flex justify-end gap-2">
+                        <button className="btn btn-ghost btn-sm" onClick={() => setReplyOpen(null)}>Cancel</button>
+                        <button
+                          onClick={() => handleReply(c._id)}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          Reply
+                        </button>
+                      </div>
                     </div>
                   )}
 
-                  {/* Replies */}
-                  {c.replies?.map((r) => {
-                    const replyLiked = r.likes?.includes(user?.email);
-                    return (
-                      <div
-                        key={r._id}
-                        className="flex items-start gap-3 mt-2 ml-12 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-600 transition-colors"
-                      >
-                        <img
-                          src={r.userImage || `https://ui-avatars.com/api/?name=${r.userName}`}
-                          alt={r.userName}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                        <div className="flex-1">
-                          <div className="flex justify-between items-center">
-                            <p className="font-medium text-gray-800 dark:text-gray-100">{r.userName}</p>
-                            {user?.email === r.userEmail && (
-                              <button
-                                onClick={() => handleDelete(r._id, r.userEmail)}
-                                className="text-red-500 hover:text-red-600"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
+                  {/* Nested Replies */}
+                  <div className="space-y-3 mt-4">
+                    {c.replies?.map((r) => {
+                      const replyLiked = r.likes?.includes(user?.email);
+                      return (
+                        <div
+                          key={r._id}
+                          className="flex items-start gap-3 p-3 rounded-xl bg-base-200/50 border border-base-300/50 transition-colors"
+                        >
+                          <img
+                            src={r.userImage || `https://ui-avatars.com/api/?name=${r.userName}`}
+                            alt={r.userName}
+                            className="w-8 h-8 rounded-full"
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-bold text-base-content">{r.userName}</p>
+                              {user?.email === r.userEmail && (
+                                <button
+                                  onClick={() => handleDelete(r._id, r.userEmail)}
+                                  className="text-error hover:scale-110 transition-transform"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+                            <p className="text-sm text-base-content/80 mt-1">{r.comment}</p>
+                            <button
+                              onClick={() => toggleLike(r._id, true)}
+                              className={`flex items-center gap-1 mt-2 text-xs ${replyLiked ? "text-error" : "text-base-content/50"
+                                }`}
+                            >
+                              <Heart className={`w-3 h-3 ${replyLiked ? "fill-current" : ""}`} />
+                              <span>{r.likes?.length || 0}</span>
+                            </button>
                           </div>
-                          <p className="text-gray-700 dark:text-gray-300 mt-1">{r.comment}</p>
-                          <button
-                            onClick={() => toggleLike(r._id, true)}
-                            className={`flex items-center gap-1 text-sm ${replyLiked ? "text-red-500" : "text-gray-500 dark:text-gray-300"}`}
-                          >
-                            <Heart className="w-4 h-4" />
-                            <span>{r.likes?.length || 0}</span>
-                          </button>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>

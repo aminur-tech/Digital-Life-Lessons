@@ -17,16 +17,17 @@ const FavoriteButton = ({ initialSaved = false, onToggle }) => {
   return (
     <button
       onClick={toggleSave}
-      className="flex items-center gap-2 px-3 py-2 border rounded-lg 
-                 hover:bg-gray-100 dark:hover:bg-gray-600 transition
-                 bg-white dark:bg-gray-700"
+      className="flex items-center gap-2 px-3 py-2 border border-base-300 rounded-lg 
+             transition-all duration-300 active:scale-95
+             bg-base-100 hover:bg-base-200 text-base-content"
     >
       <Heart
-        className={`w-5 h-5 ${
-          saved ? "text-red-500 fill-red-500" : "text-gray-500 dark:text-gray-300"
-        }`}
+        className={`w-5 h-5 transition-colors ${saved
+            ? "text-error fill-error"
+            : "text-base-content/50"
+          }`}
       />
-      <span className={`text-gray-900 dark:text-gray-100`}>
+      <span className="font-medium text-sm">
         {saved ? "Favorited" : "Favorite"}
       </span>
     </button>

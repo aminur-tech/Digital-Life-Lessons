@@ -29,7 +29,7 @@ const PaymentSuccess = () => {
 
   if (loading) {
     return (
-      <div className="h-screen flex justify-center items-center text-xl text-gray-700 dark:text-gray-300">
+      <div className="h-screen flex justify-center items-center text-xl text-base-content/70">
         Loading payment details...
       </div>
     );
@@ -44,58 +44,59 @@ const PaymentSuccess = () => {
   }
 
   return (
-    <div className="p-10 bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <div className="p-10 bg-base-200 min-h-screen transition-colors duration-300">
       <title>payment Success</title>
-      <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 text-center">
+      <h1 className="text-3xl font-bold text-success text-center">
         🎉 Payment Successful
       </h1>
 
-      <p className="text-center mt-4 text-lg text-gray-700 dark:text-gray-300">
+      <p className="text-center mt-4 text-lg text-base-content/80">
         Your Premium Membership has been activated.
       </p>
 
-      <div className="overflow-x-auto max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-6 shadow rounded-xl">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+      <div className="overflow-x-auto max-w-3xl mx-auto mt-10 bg-base-100 p-6 shadow-xl rounded-2xl border border-base-300">
+        <h2 className="text-2xl font-bold mb-4 text-base-content">
           Payment Details
         </h2>
 
-        <table className="min-w-full border border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">
-          <thead className="bg-gray-100 dark:bg-gray-700">
+        <table className="table w-full border border-base-300 text-base-content">
+          {/* Header */}
+          <thead className="bg-base-200 text-base-content">
             <tr>
-              <th className="py-3 px-4 border-b">Field</th>
-              <th className="py-3 px-4 border-b">Value</th>
+              <th className="border-b border-base-300">Field</th>
+              <th className="border-b border-base-300">Value</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td className="py-3 px-4 border-b">Transaction ID</td>
-              <td className="py-3 px-4 border-b">{tx?.id}</td>
+            <tr className="hover:bg-base-200/50 transition-colors">
+              <td className="border-b border-base-300 font-medium">Transaction ID</td>
+              <td className="border-b border-base-300 font-mono text-sm opacity-70">{tx?.id}</td>
             </tr>
 
-            <tr>
-              <td className="py-3 px-4 border-b">Amount</td>
-              <td className="py-3 px-4 border-b">${tx?.amount}</td>
+            <tr className="hover:bg-base-200/50 transition-colors">
+              <td className="border-b border-base-300 font-medium">Amount</td>
+              <td className="border-b border-base-300 text-success font-bold">${tx?.amount}</td>
             </tr>
 
-            <tr>
-              <td className="py-3 px-4 border-b">Currency</td>
-              <td className="py-3 px-4 border-b uppercase">{tx?.currency}</td>
+            <tr className="hover:bg-base-200/50 transition-colors">
+              <td className="border-b border-base-300 font-medium">Currency</td>
+              <td className="border-b border-base-300 uppercase opacity-70">{tx?.currency}</td>
             </tr>
 
-            <tr>
-              <td className="py-3 px-4 border-b">Paid At</td>
-              <td className="py-3 px-4 border-b">
+            <tr className="hover:bg-base-200/50 transition-colors">
+              <td className="border-b border-base-300 font-medium">Paid At</td>
+              <td className="border-b border-base-300 opacity-70">
                 {new Date(tx?.paidAt).toLocaleString()}
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-8">
           <Link
             to="/"
-            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 transition"
+            className="btn btn-primary px-8 rounded-full shadow-lg transition-transform active:scale-95"
           >
             Go Back Home
           </Link>

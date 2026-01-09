@@ -56,19 +56,21 @@ const FeaturedLessons = () => {
           return (
             <div
               key={lesson._id}
-              className={`relative rounded-xl shadow-md  transition overflow-hidden hover:shadow-xl
-                          ${locked ? "opacity-80" : ""}
-                           bg-white dark:bg-gray-800
-                           text-gray-900 dark:text-gray-100`}
+              className={`relative rounded-xl shadow-md transition overflow-hidden hover:shadow-xl
+            ${locked ? "opacity-80" : ""}
+            bg-base-100 text-base-content border border-base-300`}
             >
+
               {/* LOCK OVERLAY */}
               {locked && (
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 text-white text-center p-4 rounded-xl">
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-neutral/70 text-neutral-content text-center p-4">
                   <Lock className="w-6 h-6 mb-2" />
-                  <p className="text-sm font-medium">Premium Lesson – Upgrade to View</p>
+                  <p className="text-sm font-medium">
+                    Premium Lesson – Upgrade to View
+                  </p>
                   <Link
                     to="/dashboard/pricing"
-                    className="mt-3 px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 transition"
+                    className="mt-3 px-4 py-2 bg-warning text-warning-content font-semibold rounded transition"
                   >
                     Upgrade
                   </Link>
@@ -77,13 +79,13 @@ const FeaturedLessons = () => {
 
               {/* CATEGORY */}
               <div className="absolute top-2 left-2 z-10">
-                <span className="bg-blue-400 dark:bg-blue-600 text-white px-2 py-1 rounded-2xl text-xs font-semibold">
+                <span className="bg-primary text-primary-content px-2 py-1 rounded-2xl text-xs font-semibold">
                   {lesson.category || "Lesson"}
                 </span>
               </div>
 
               {/* IMAGE */}
-              <div className="h-44 w-full overflow-hidden relative">
+              <div className="h-44 w-full overflow-hidden">
                 <img
                   src={lesson.image}
                   alt={lesson.title}
@@ -93,10 +95,11 @@ const FeaturedLessons = () => {
 
               {/* CONTENT */}
               <div className={`p-4 ${locked ? "blur-sm" : ""}`}>
-                <h3 className="text-lg font-semibold mb-1 line-clamp-2 text-gray-800 dark:text-gray-100">
+                <h3 className="text-lg font-semibold mb-1 line-clamp-2">
                   {lesson.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
+
+                <p className="text-sm opacity-70 mb-3 line-clamp-2">
                   {lesson.description.slice(0, 100)}...
                 </p>
 
@@ -105,13 +108,13 @@ const FeaturedLessons = () => {
                   <img
                     src={lesson.author_Img}
                     alt={lesson.author_Name}
-                    className="w-9 h-9 rounded-full object-cover border border-gray-200 dark:border-gray-600"
+                    className="w-9 h-9 rounded-full object-cover border border-base-300"
                   />
                   <div>
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                    <p className="text-sm font-medium">
                       {lesson.author_Name}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-400">
+                    <p className="text-xs opacity-60">
                       {new Date(lesson.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -120,11 +123,11 @@ const FeaturedLessons = () => {
                 {/* ACCESS LEVEL */}
                 <div className="mb-3">
                   {isPremiumLesson ? (
-                    <span className="flex items-center gap-1 text-red-500 text-sm font-semibold">
+                    <span className="flex items-center gap-1 text-error text-sm font-semibold">
                       <Lock className="w-4 h-4" /> Premium
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 text-green-600 dark:text-green-400 text-sm font-semibold">
+                    <span className="flex items-center gap-1 text-success text-sm font-semibold">
                       <Unlock className="w-4 h-4" /> Free
                     </span>
                   )}
@@ -133,7 +136,7 @@ const FeaturedLessons = () => {
                 {/* SEE DETAILS BUTTON */}
                 <Link
                   to={locked ? "/dashboard/pricing" : `/lessons/${lesson._id}`}
-                  className="block w-full text-center bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold py-2 rounded transition"
+                  className="block w-full text-center bg-primary text-primary-content font-semibold py-2 rounded transition hover:opacity-90"
                 >
                   See Details
                 </Link>
@@ -143,18 +146,19 @@ const FeaturedLessons = () => {
         })}
       </div>
 
-      {/* SEE MORE BUTTON */}
+      {/* SEE MORE */}
       {featured.length > visibleCount && (
         <div className="flex justify-center mt-6">
           <button
             onClick={handleSeeMore}
-            className="px-6 py-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold rounded transition"
+            className="px-6 py-2 bg-primary text-primary-content font-semibold rounded transition hover:opacity-90"
           >
             See More
           </button>
         </div>
       )}
     </div>
+
   );
 };
 

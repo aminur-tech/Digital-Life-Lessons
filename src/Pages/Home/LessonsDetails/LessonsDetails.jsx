@@ -21,28 +21,15 @@ const LessonsDetails = () => {
   const [isPremium, setIsPremium] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
 
- 
-  useEffect(() => {
-    const theme = localStorage.getItem("theme") || "light";
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
   useEffect(() => {
     if (!id) return;
-    // Fetch lesson
     axiosSecure.get(`/lessons/${id}`).then((res) => setLesson(res.data));
 
-    // Fetch similar lessons
     axiosSecure.get(`/lessons/similar/${id}`).then((res) => {
       setSimilarLessons(res.data);
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Fetch premium status
     if (user?.email) {
       axiosSecure
         .get(`/users/premium/${user.email}`)
@@ -52,9 +39,10 @@ const LessonsDetails = () => {
 
   if (!lesson)
     return (
-      <p className="text-center py-20 text-gray-800 dark:text-gray-200">
-        Loading lesson details...
-      </p>
+      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <p className="text-base-content/70">Loading lesson details...</p>
+      </div>
     );
 
   const isPremiumContent =
@@ -88,41 +76,43 @@ const LessonsDetails = () => {
   };
 
   return (
-    <div className="text-gray-800 dark:text-gray-200 p-1">
-      <title>lesson details</title>
+    <div className="text-base-content p-1 transition-colors duration-300">
       <div className="lg:grid lg:grid-cols-3 lg:gap-10">
+        
         {/* LEFT COLUMN */}
         <div className="lg:col-span-2 space-y-12">
-          <div className="space-y-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-            <h1 className="text-5xl font-extrabold leading-tight">
+          <div className="space-y-4 pb-4 border-b border-base-300">
+            <h1 className="text-4xl md:text-5xl font-black leading-tight text-base-content">
               {lesson.title}
             </h1>
-            <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-              <span className="text-indigo-600 font-medium">{lesson.category}</span>
-              <span>|</span>
-              <span>Tone: {lesson.tone}</span>
+            <div className="flex items-center space-x-4 text-sm font-medium">
+              <span className="text-primary">{lesson.category}</span>
+              <span className="opacity-30">|</span>
+              <span className="opacity-70">Tone: {lesson.tone}</span>
             </div>
           </div>
 
           {/* FEATURE IMAGE */}
-          <div className="relative">
+          <div className="relative group overflow-hidden rounded-2xl shadow-2xl border border-base-300">
             <img
               src={lesson.image}
               alt={lesson.title}
-              className={`w-full max-h-[500px] object-cover rounded-2xl shadow-xl transition duration-500 ${
-                isBlocked ? "blur-sm grayscale opacity-70" : ""
+              className={`w-full max-h-[500px] object-cover transition duration-700 ${
+                isBlocked ? "blur-md grayscale opacity-50" : "group-hover:scale-105"
               }`}
             />
             {isBlocked && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-gradient-to-t from-gray-900/80 to-transparent rounded-2xl p-6">
-                <Lock className="w-12 h-12 mb-3 text-yellow-400" />
-                <p className="text-3xl font-bold mb-2">Exclusive Premium Content</p>
-                <p className="text-lg text-gray-200 mb-6">
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-base-300/60 backdrop-blur-md text-center">
+                <div className="bg-base-100 p-4 rounded-full shadow-xl mb-4">
+                   <Lock className="w-10 h-10 text-warning" />
+                </div>
+                <p className="text-3xl font-bold mb-2 text-base-content">Exclusive Premium Content</p>
+                <p className="text-lg opacity-80 max-w-md mb-6">
                   Unlock this entire lesson and more with a premium membership.
                 </p>
                 <Link
                   to="/dashboard/pricing"
-                  className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-full text-lg font-semibold shadow-lg transition duration-300"
+                  className="btn btn-primary btn-wide rounded-full shadow-lg"
                 >
                   Upgrade to Unlock
                 </Link>
@@ -132,13 +122,13 @@ const LessonsDetails = () => {
 
           {/* DESCRIPTION */}
           {!isBlocked && (
-            <section className="prose max-w-none text-gray-700 dark:text-gray-300">
-              <p className="text-xl leading-relaxed">{lesson.description}</p>
+            <section className="prose lg:prose-xl max-w-none text-base-content/90">
+              <p className="leading-relaxed">{lesson.description}</p>
             </section>
           )}
 
           {/* COMMENTS */}
-          <section className="pt-8 border-t border-gray-200 dark:border-gray-700">
+          <section className="pt-8 border-t border-base-300">
             <h2 className="text-3xl font-bold mb-6">Discussions</h2>
             <Comments lessonId={lesson._id} />
           </section>
@@ -146,11 +136,13 @@ const LessonsDetails = () => {
 
         {/* RIGHT COLUMN */}
         <aside className="lg:col-span-1 lg:space-y-8 mt-12 lg:mt-0">
-          <div className="sticky top-20 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
-            <h3 className="font-semibold text-lg mb-3 border-b pb-2 dark:border-gray-600">
+          
+          {/* Quick Actions Card */}
+          <div className="sticky top-24 bg-base-100 p-6 rounded-2xl shadow-xl border border-base-200 mb-8">
+            <h3 className="font-bold text-lg mb-4 opacity-70 uppercase tracking-widest text-xs">
               Quick Actions
             </h3>
-            <div className="flex justify-between items-center gap-2">
+            <div className="flex justify-between items-center gap-3">
               <LikeButton
                 lessonId={lesson._id}
                 initialLiked={lesson.likes?.includes(user?.email)}
@@ -163,40 +155,39 @@ const LessonsDetails = () => {
               />
               <button
                 onClick={() => setShowReport(true)}
-                className="flex items-center justify-center p-3 text-sm text-gray-600 border border-gray-300 rounded-full hover:bg-red-50 hover:text-red-600 transition duration-200"
+                className="btn btn-circle btn-outline btn-error btn-sm"
+                title="Report"
               >
                 🚩
               </button>
             </div>
           </div>
 
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-            <h3 className="font-semibold text-lg mb-3 border-b pb-2 dark:border-gray-600">
-              Lesson Creator
-            </h3>
+          {/* Author Card */}
+          <div className="p-6 bg-base-200 rounded-2xl border border-base-300">
+            <h3 className="font-bold text-sm opacity-60 mb-4 uppercase">Lesson Creator</h3>
             <AuthorCard authorEmail={lesson.email} />
           </div>
 
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-            <h3 className="font-semibold text-lg mb-4 border-b pb-2 dark:border-gray-600">
-              Lesson Info
-            </h3>
-            <div className="text-gray-600 dark:text-gray-400 text-base space-y-3">
-              <div className="flex items-center gap-3">
-                <Eye className="w-5 h-5 text-indigo-500" />
-                <span>Views: {Math.floor(Math.random() * 10000).toLocaleString()}</span>
+          {/* Metrics Card */}
+          <div className="p-6 bg-base-100 rounded-2xl shadow-md border border-base-200">
+            <h3 className="font-bold text-sm opacity-60 mb-4 uppercase">Lesson Info</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm">
+                <Eye className="w-5 h-5 text-primary" />
+                <span className="opacity-80">Views: {Math.floor(Math.random() * 10000).toLocaleString()}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Calendar className="w-5 h-5 text-indigo-500" />
-                <span>Created: {lesson.createdAt}</span>
+              <div className="flex items-center gap-3 text-sm">
+                <Calendar className="w-5 h-5 text-primary" />
+                <span className="opacity-80">Created: {lesson.createdAt}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-indigo-500" />
-                <span>Last Updated: {lesson.updateAt || lesson.createdAt} </span>
+              <div className="flex items-center gap-3 text-sm">
+                <Clock className="w-5 h-5 text-primary" />
+                <span className="opacity-80">Updated: {lesson.updateAt || lesson.createdAt} </span>
               </div>
-              <div className="flex items-center gap-3">
-                <Lock className="w-5 h-5 text-indigo-500" />
-                <span>Visibility:  {lesson.privacy}</span>
+              <div className="flex items-center gap-3 text-sm">
+                <Lock className="w-5 h-5 text-primary" />
+                <span className="opacity-80">Visibility: {lesson.privacy}</span>
               </div>
             </div>
           </div>
@@ -204,38 +195,40 @@ const LessonsDetails = () => {
       </div>
 
       {/* SIMILAR LESSONS */}
-      <section className="mt-20 mb-24 pt-10 border-t border-gray-200 dark:border-gray-700">
-        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100">
+      <section className="mt-20 mb-24 pt-10 border-t border-base-300">
+        <h2 className="text-3xl font-black mb-8 text-base-content">
           More Lessons You Might Like
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {similarLessons.slice(0, visibleCount).map((s) => (
             <Link
               to={`/lessons/${s._id}`}
               key={s._id}
-              className="block group bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden"
+              className="card bg-base-100 shadow-md hover:shadow-2xl transition-all duration-300 border border-base-200 overflow-hidden group"
             >
-              <img
-                src={s.image}
-                alt={s.title}
-                className="h-40 w-full object-cover rounded-t-xl group-hover:scale-105 transition duration-500"
-              />
-              <div className="p-4">
-                <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 group-hover:text-indigo-600 transition duration-200">
+              <figure className="overflow-hidden">
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  className="h-48 w-full object-cover group-hover:scale-110 transition duration-500"
+                />
+              </figure>
+              <div className="card-body p-4">
+                <h3 className="card-title text-base group-hover:text-primary transition-colors">
                   {s.title}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{s.category}</p>
+                <p className="text-xs opacity-50 uppercase font-bold">{s.category}</p>
               </div>
             </Link>
           ))}
         </div>
 
         {visibleCount < similarLessons.length && (
-          <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-12">
             <button
               onClick={() => setVisibleCount(prev => prev + 4)}
-              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-semibold shadow-md transition"
+              className="btn btn-primary btn-wide rounded-full shadow-lg"
             >
               Show More
             </button>
@@ -243,7 +236,6 @@ const LessonsDetails = () => {
         )}
       </section>
 
-      {/* REPORT MODAL */}
       <ReportModal
         isOpen={showReport}
         onClose={() => setShowReport(false)}

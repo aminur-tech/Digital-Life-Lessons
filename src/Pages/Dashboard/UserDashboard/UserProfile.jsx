@@ -72,24 +72,26 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-<title>profile</title>
+    <div className="max-w-5xl mx-auto p-6 space-y-6">
+
+      <title>Profile</title>
+
       {/* Profile Header */}
-      <div className="flex items-center gap-6 bg-white dark:bg-gray-800 p-6 rounded-xl shadow relative">
+      <div className="flex items-center gap-6 bg-base-100 text-base-content p-6 rounded-xl shadow relative">
 
         {/* Photo + Pencil */}
         <div className="relative">
           <img
             src={user.photoURL}
             alt="Profile"
-            className="w-24 h-24 rounded-full object-cover border dark:border-gray-600"
+            className="w-24 h-24 rounded-full object-cover border border-base-300"
           />
 
           <button
-            className="absolute bottom-1 right-1 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer"
+            className="absolute bottom-1 right-1 bg-base-200 p-1 rounded-full shadow cursor-pointer"
             onClick={() => photoInputRef.current.click()}
           >
-            <Pencil size={18} className="text-gray-600 dark:text-gray-300" />
+            <Pencil size={18} className="text-base-content" />
           </button>
 
           <input
@@ -102,45 +104,45 @@ const UserProfile = () => {
         </div>
 
         <div>
-          <h1 className="text-2xl font-semibold flex items-center gap-2 text-gray-800 dark:text-gray-100">
+          <h1 className="text-2xl font-semibold flex items-center gap-2">
             {user.displayName || "No Name"}
 
             {premium?.isPremium && (
-              <span className="text-yellow-500 flex items-center gap-1 text-sm">
+              <span className="text-warning flex items-center gap-1 text-sm">
                 <Star size={18} /> Premium
               </span>
             )}
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
+          <p className="opacity-70">{user.email}</p>
 
-          <div className="mt-2 flex gap-4 text-gray-800 dark:text-gray-100">
+          <div className="mt-2 flex gap-4">
             <p>
-              <span className="font-bold text-blue-500">{lessons.length}</span> lessons created
+              <span className="font-bold text-primary">{lessons.length}</span> lessons created
             </p>
             <p>
-              <span className="font-bold text-blue-500">{savedCount}</span> saved lessons
+              <span className="font-bold text-primary">{savedCount}</span> saved lessons
             </p>
           </div>
         </div>
       </div>
 
       {/* Update Name */}
-      <div className="mt-6 bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
-        <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-100">Update Profile</h2>
+      <div className="bg-base-100 text-base-content p-6 rounded-xl shadow space-y-3">
+        <h2 className="text-xl font-semibold">Update Profile</h2>
 
-        <label className="font-medium text-gray-700 dark:text-gray-300">Display Name</label>
+        <label className="font-medium">Display Name</label>
 
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2">
           <input
-            className="border p-2 rounded w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+            className="input input-bordered w-full"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
 
           <button
             onClick={handleEditName}
-            className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded flex items-center gap-1 hover:bg-blue-700 dark:hover:bg-blue-600 transition"
+            className="btn btn-primary flex items-center gap-1"
           >
             <Edit3 size={18} /> Save
           </button>
@@ -148,25 +150,25 @@ const UserProfile = () => {
       </div>
 
       {/* User Lessons */}
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Lessons Created by You</h2>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold">Lessons Created by You</h2>
 
         {lessons.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-300">No lessons created yet.</p>
+          <p className="opacity-70">No lessons created yet.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {lessons.map((lesson) => (
               <Link key={lesson._id} to={`/lessons/${lesson._id}`}>
-                <div className="bg-white dark:bg-gray-700 shadow rounded-xl p-4 cursor-pointer hover:shadow-lg transition">
+                <div className="bg-base-200 text-base-content shadow rounded-xl p-4 cursor-pointer hover:shadow-lg transition space-y-2">
                   <img
                     src={lesson.image}
                     className="w-full h-40 object-cover rounded-lg"
                   />
-                  <h3 className="text-lg font-semibold mt-3 text-gray-800 dark:text-gray-100">{lesson.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                  <h3 className="text-lg font-semibold">{lesson.title}</h3>
+                  <p className="text-sm opacity-70">
                     {lesson.description.slice(0, 100)}...
                   </p>
-                  <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-xs opacity-50">
                     {new Date(lesson.createdAt).toLocaleDateString()}
                   </p>
                 </div>
@@ -177,6 +179,7 @@ const UserProfile = () => {
       </div>
 
     </div>
+
   );
 };
 

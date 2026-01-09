@@ -19,26 +19,26 @@ const AuthorCard = ({ authorEmail }) => {
   if (!authorData) return null; // or loader
 
   return (
-    <div className="flex items-center gap-4 border p-4 rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700 shadow transition-colors">
+    <div className="flex items-center gap-4 border border-base-300 p-4 rounded-xl bg-base-100 text-base-content shadow-sm transition-colors">
       <img
         src={authorData.user.photoURL || '/default-avatar.png'}
         alt={authorData.user.displayName || authorData.user.name}
-        className="w-16 h-16 rounded-full object-cover"
+        className="w-16 h-16 rounded-full object-cover ring-2 ring-base-200"
       />
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="text-lg font-semibold">
           {authorData.user.displayName || authorData.user.name}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm">
+        <p className="text-base-content/60 text-sm">
           {authorData.lessons.length} lesson{authorData.lessons.length !== 1 && 's'} created
         </p>
 
         <Link
           to={`/dashboard/author/${authorEmail}`}
-          className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
+          className="text-primary text-sm font-medium hover:underline flex items-center gap-1 mt-1 transition-colors"
         >
-          View all lessons by this author →
+          View all lessons by this author <span className="text-xs">→</span>
         </Link>
       </div>
     </div>

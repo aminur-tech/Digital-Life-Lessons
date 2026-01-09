@@ -90,35 +90,62 @@ const AdminHome = () => {
   }, [axiosSecure]);
 
   return (
-    <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+    <div className="p-6 bg-base-200 dark:bg-base-300 min-h-screen text-base-content transition-colors">
+      <h1 className="text-3xl font-bold mb-6 text-base-content dark:text-base-content">
+        Admin Dashboard
+      </h1>
 
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card title="Total Users" value={stats.totalUsers} color="bg-blue-500" />
-        <Card title="Public Lessons" value={stats.totalPublicLessons} color="bg-green-500" />
-        <Card title="Reported Lessons" value={stats.totalReportedLessons} color="bg-red-500" />
-        <Card title="New Lessons Today" value={stats.newLessonsToday} color="bg-yellow-500" />
+        <Card title="Total Users" value={stats.totalUsers} color="bg-primary dark:bg-primary-focus" />
+        <Card title="Public Lessons" value={stats.totalPublicLessons} color="bg-success dark:bg-success-focus" />
+        <Card title="Reported Lessons" value={stats.totalReportedLessons} color="bg-error dark:bg-error-focus" />
+        <Card title="New Lessons Today" value={stats.newLessonsToday} color="bg-warning dark:bg-warning-focus" />
       </div>
 
+      {/* Most Active Contributors */}
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-3">Most Active Contributors</h2>
-        <ul className="bg-white dark:bg-gray-800 shadow rounded p-4">
-          {stats.mostActiveContributors.map((c) => (
-            <li
-              key={c.email}
-              className="py-1 border-b last:border-b-0 border-gray-200 dark:border-gray-700"
-            >
-              <span className="font-medium">{c.email}</span> - {c.count} lessons
-            </li>
-          ))}
-        </ul>
+        <h2 className="text-2xl font-semibold mb-3 text-base-content">
+          Most Active Contributors
+        </h2>
+
+        {stats.mostActiveContributors.length === 0 ? (
+          <p className="text-base-content/70  py-4 text-center">
+            No contributors yet.
+          </p>
+        ) : (
+          <ul className="bg-base-100 dark:bg-base-200 shadow rounded p-4">
+            {stats.mostActiveContributors.map((c) => (
+              <li
+                key={c.email}
+                className="py-2 border-b last:border-b-0 border-base-300 dark:border-base-600 flex justify-between items-center"
+              >
+                <span className="font-medium text-base-content dark:text-base-content">{c.email}</span>
+                <span className="text-sm text-base-content">{c.count} lessons</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
+      {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ChartCard title="Lesson Growth" data={lessonGrowth} dataKey="lessons" />
-        <ChartCard title="User Growth" data={userGrowth} dataKey="users" />
+        <ChartCard
+          title="Lesson Growth"
+          data={lessonGrowth}
+          dataKey="lessons"
+          containerClass="bg-base-100 dark:bg-base-200 shadow rounded p-4"
+        />
+        <ChartCard
+          title="User Growth"
+          data={userGrowth}
+          dataKey="users"
+          containerClass="bg-base-100 dark:bg-base-200 shadow rounded p-4"
+        />
       </div>
     </div>
+
+
   );
 };
 

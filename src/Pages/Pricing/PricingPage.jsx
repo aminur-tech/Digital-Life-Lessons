@@ -41,58 +41,62 @@ const PricingPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-4 bg-gray-100 dark:bg-gray-900 min-h-screen rounded-xl">
+    <div className="max-w-4xl mx-auto mt-10 p-4 bg-base-200 min-h-screen rounded-xl transition-colors duration-300">
       <title>pricing</title>
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold text-center mb-6 text-base-content">
         Upgrade to Premium
       </h1>
 
-      <table className="table-auto w-full border border-gray-200 dark:border-gray-700 mb-6 text-gray-800 dark:text-gray-200">
-        <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          <tr>
-            <th className="border px-4 py-2">Feature</th>
-            <th className="border px-4 py-2">Free</th>
-            <th className="border px-4 py-2">Premium</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border px-4 py-2">Number of Lessons</td>
-            <td className="border px-4 py-2">8</td>
-            <td className="border px-4 py-2">Unlimited</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Premium Lesson Creation</td>
-            <td className="border px-4 py-2">❌</td>
-            <td className="border px-4 py-2">✅</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Ad-Free Experience</td>
-            <td className="border px-4 py-2">❌</td>
-            <td className="border px-4 py-2">✅</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Priority Listing</td>
-            <td className="border px-4 py-2">❌</td>
-            <td className="border px-4 py-2">✅</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Support</td>
-            <td className="border px-4 py-2">Basic</td>
-            <td className="border px-4 py-2">Priority</td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Access to Premium Resources</td>
-            <td className="border px-4 py-2">❌</td>
-            <td className="border px-4 py-2">✅</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table w-full border border-base-300 mb-6 text-base-content">
+          {/* Header */}
+          <thead className="bg-base-300 text-base-content">
+            <tr>
+              <th className="border border-base-300 px-4 py-2">Feature</th>
+              <th className="border border-base-300 px-4 py-2">Free</th>
+              <th className="border border-base-300 px-4 py-2">Premium</th>
+            </tr>
+          </thead>
+          {/* Body */}
+          <tbody className="bg-base-100">
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Number of Lessons</td>
+              <td className="border border-base-300 px-4 py-2">8</td>
+              <td className="border border-base-300 px-4 py-2 font-bold text-primary">Unlimited</td>
+            </tr>
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Premium Lesson Creation</td>
+              <td className="border border-base-300 px-4 py-2">❌</td>
+              <td className="border border-base-300 px-4 py-2">✅</td>
+            </tr>
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Ad-Free Experience</td>
+              <td className="border border-base-300 px-4 py-2">❌</td>
+              <td className="border border-base-300 px-4 py-2">✅</td>
+            </tr>
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Priority Listing</td>
+              <td className="border border-base-300 px-4 py-2">❌</td>
+              <td className="border border-base-300 px-4 py-2">✅</td>
+            </tr>
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Support</td>
+              <td className="border border-base-300 px-4 py-2">Basic</td>
+              <td className="border border-base-300 px-4 py-2">Priority</td>
+            </tr>
+            <tr>
+              <td className="border border-base-300 px-4 py-2 font-medium">Access to Premium Resources</td>
+              <td className="border border-base-300 px-4 py-2">❌</td>
+              <td className="border border-base-300 px-4 py-2">✅</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div className="text-center">
+      <div className="text-center mt-8">
         <button
           onClick={handleUpgrade}
-          className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 transition"
+          className="btn btn-primary btn-wide rounded-xl shadow-lg transition-transform active:scale-95"
         >
           Upgrade to Premium (৳1500)
         </button>

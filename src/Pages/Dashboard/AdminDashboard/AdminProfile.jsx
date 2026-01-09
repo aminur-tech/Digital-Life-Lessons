@@ -59,22 +59,21 @@ const AdminProfile = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 shadow-lg rounded-2xl text-gray-900 dark:text-gray-100">
-      <title>profile</title>
-      <h1 className="text-2xl font-bold mb-4">Admin Profile</h1>
+    <div className="max-w-3xl mx-auto mt-10 p-6 bg-base-100 shadow-xl rounded-2xl text-base-content border border-base-200 transition-colors duration-300">
+      <h1 className="text-2xl font-bold mb-6">Admin Profile</h1>
 
       {/* Profile Info */}
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col sm:flex-row items-center gap-6">
         {/* Profile Photo */}
         <div className="relative">
           <img
             src={photoPreview}
             alt="Admin"
-            className="w-28 h-28 rounded-full object-cover border dark:border-gray-700"
+            className="w-28 h-28 rounded-full object-cover border-4 border-base-200 shadow-sm"
           />
 
-          <label className="absolute bottom-1 right-1 bg-gray-800 text-white p-2 rounded-full cursor-pointer hover:bg-black">
-            <Camera size={14} />
+          <label className="absolute bottom-1 right-1 bg-primary text-primary-content p-2 rounded-full cursor-pointer hover:scale-110 transition-transform shadow-lg">
+            <Camera size={16} />
             <input
               type="file"
               accept="image/*"
@@ -85,49 +84,59 @@ const AdminProfile = () => {
         </div>
 
         {/* Name + Email */}
-        <div>
-          <h2 className="text-xl font-semibold flex items-center gap-2">
+        <div className="text-center sm:text-left">
+          <h2 className="text-2xl font-semibold flex flex-wrap justify-center sm:justify-start items-center gap-2">
             {user?.displayName}
-            <span className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md text-xs flex items-center gap-1">
+            <span className="badge badge-info gap-1 py-3 px-3">
               <ShieldCheck size={14} /> Admin
             </span>
           </h2>
-
-          <p className="text-gray-600 dark:text-gray-300">{user?.email}</p>
+          <p className="text-base-content/60 mt-1">{user?.email}</p>
         </div>
       </div>
 
       {/* Edit Name */}
-      <div className="mt-6">
-        <label className="font-medium">Update Display Name</label>
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          className="w-full mt-2 p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <button
-          onClick={handleEditName}
-          disabled={loading}
-          className="mt-3 px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 disabled:bg-gray-400"
-        >
-          {loading ? "Updating..." : "Save Changes"}
-        </button>
+      <div className="mt-8 p-4 rounded-xl bg-base-200/50">
+        <label className="label font-medium pb-2 text-base-content/80">Update Display Name</label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="Enter new name"
+            className="input input-bordered w-full bg-base-100 focus:input-primary"
+          />
+          <button
+            onClick={handleEditName}
+            disabled={loading}
+            className="btn btn-primary"
+          >
+            {loading ? <span className="loading loading-spinner"></span> : "Save"}
+          </button>
+        </div>
       </div>
 
       {/* Admin Activity Summary */}
       <div className="mt-10">
-        <h2 className="text-lg font-semibold mb-2">Admin Activity</h2>
+        <h2 className="text-lg font-semibold mb-4 opacity-80">Admin Activity</h2>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 border rounded-xl bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
-            <p className="text-gray-500 dark:text-gray-300 text-sm">Lessons Moderated</p>
-            <h3 className="text-xl font-bold">12</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Stat Card 1 */}
+          <div className="stats shadow bg-base-200/40 border border-base-300">
+            <div className="stat">
+              <div className="stat-title text-base-content/70">Lessons Moderated</div>
+              <div className="stat-value text-primary text-2xl">12</div>
+              <div className="stat-desc text-success">↗︎ 4 (30%)</div>
+            </div>
           </div>
-          <div className="p-4 border rounded-xl bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
-            <p className="text-gray-500 dark:text-gray-300 text-sm">Actions Taken</p>
-            <h3 className="text-xl font-bold">34</h3>
+
+          {/* Stat Card 2 */}
+          <div className="stats shadow bg-base-200/40 border border-base-300">
+            <div className="stat">
+              <div className="stat-title text-base-content/70">Actions Taken</div>
+              <div className="stat-value text-secondary text-2xl">34</div>
+              <div className="stat-desc">Total tasks completed</div>
+            </div>
           </div>
         </div>
       </div>
