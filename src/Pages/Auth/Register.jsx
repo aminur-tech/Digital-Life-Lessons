@@ -143,7 +143,7 @@ const Register = () => {
             <button 
               type="button" 
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-[46px] text-base-content/40 hover:text-primary transition-colors"
+              className="absolute right-15 top-2 text-base-content/40 hover:text-primary transition-colors"
             >
               {showPassword ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
             </button>

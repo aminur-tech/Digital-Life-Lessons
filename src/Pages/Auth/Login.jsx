@@ -114,7 +114,7 @@ const Login = () => {
                             className={`input input-bordered w-full pr-10 ${errors.password ? 'border-error' : 'border-base-300'}`}
                             placeholder="••••••••"
                         />
-                        <span className="absolute right-3 top-11 text-base-content/40 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                        <span className="absolute right-3 top-8 text-base-content/40 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
                         </span>
                         {/* Validation Error Message */}

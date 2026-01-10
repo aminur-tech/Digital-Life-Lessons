@@ -78,6 +78,7 @@ const LessonsDetails = () => {
   return (
     <div className="text-base-content p-1 transition-colors duration-300">
       <div className="lg:grid lg:grid-cols-3 lg:gap-10">
+        <title>{lesson.title} | Digital Life Lessons</title>
         
         {/* LEFT COLUMN */}
         <div className="lg:col-span-2 space-y-12">
