@@ -24,6 +24,10 @@ import AdminRoute from "./AdminRoute";
 import PublicLessons from "../Pages/PublicLesson/PublicLessons";
 import LessonsDetails from "../Pages/Home/LessonsDetails/LessonsDetails";
 import AuthorProfile from "../Pages/Dashboard/Author/AuthorProfile";
+import About from "../Pages/About/About";
+import FAQ from "../Pages/FAQ/FAQ";
+import Privacy from "../Pages/Privacy Policy/Privacy";
+import TermsConditions from "../Pages/Terms & Conditions/TermsConditions";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +40,22 @@ export const router = createBrowserRouter([
       {
         path: 'public-lessons',
         element: <PublicLessons></PublicLessons>
+      },
+      {
+        path: 'about',
+        element: <About/>
+      },
+      {
+        path: 'faq',
+        element: <FAQ/>
+      },
+      {
+        path: 'privacy',
+        element: <Privacy/>
+      },
+      {
+        path: 'Terms-Conditions',
+        element: <TermsConditions/>
       },
       {
         path: 'lessons/:id',
@@ -56,7 +76,7 @@ export const router = createBrowserRouter([
     element: <PrivateRoutes><DashboardLayout /></PrivateRoutes>,
     children: [
       // User Dashboard
-      { index: true, element: <DashboardHome /> },
+      { path: "user/home", element: <DashboardHome /> },
       { path: "add-lesson", element: <AddLesson /> },
       { path: "my-lessons", element: <MyLessons /> },
       { path: "my-favorites", element: <MyFavorites /> },
@@ -69,7 +89,7 @@ export const router = createBrowserRouter([
       { path: "author/:email", element: <AuthorProfile/> },
 
       // Admin Dashboard
-      { path: "admin", element: <AdminRoute><AdminHome /></AdminRoute> },
+      { path: "admin/home", element: <AdminRoute><AdminHome /></AdminRoute> },
       { path: "admin/manage-users", element: <AdminRoute><ManageUsers /></AdminRoute> },
       { path: "admin/manage-lessons", element: <AdminRoute><ManageLessons /></AdminRoute> },
       { path: "admin/reported-lessons", element: <AdminRoute><ReportedLessons /></AdminRoute> },

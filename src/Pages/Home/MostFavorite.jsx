@@ -17,7 +17,7 @@ const MostFavorite = () => {
   if (isLoading) return <Loading />
 
   return (
-    <div className="p-6 bg-base-100 rounded-xl">
+    <div className=" bg-base-100 rounded-xl">
       <h2 className="text-2xl font-bold mb-6 text-base-content flex items-center gap-2">
         🔖 Most Saved Lessons
       </h2>

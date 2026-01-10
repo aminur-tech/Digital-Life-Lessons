@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -53,7 +53,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/terms" className="hover:text-primary transition">
+              <Link to="/Terms-Conditions" className="hover:text-primary transition">
                 Terms & Conditions
               </Link>
             </li>
@@ -66,20 +66,31 @@ export default function Footer() {
             Follow Us
           </h3>
           <div className="flex items-center space-x-5">
-            <a
-              href="https://github.com/aminur-tech"
+            <Link
+              to="https://github.com/aminur-tech"
               className="hover:text-primary transition"
               aria-label="GitHub"
             >
               <Github />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/aminur-rahman4078"
+            </Link>
+            <Link
+              to="https://www.linkedin.com/in/aminur-rahman4078"
               className="hover:text-primary transition"
               aria-label="LinkedIn"
             >
               <Linkedin />
+            </Link>
+
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=aminur.programme@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="gmail"
+              className="hover:text-primary transition"
+            >
+              <Mail />
             </a>
+
           </div>
         </div>
       </div>

@@ -228,7 +228,7 @@ const LessonsDetails = () => {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setVisibleCount(prev => prev + 4)}
-              className="btn btn-primary btn-wide rounded-full shadow-lg"
+              className="btn btn-primary  rounded shadow-lg"
             >
               Show More
             </button>

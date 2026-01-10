@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import axios from 'axios';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 
 const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
@@ -14,176 +15,168 @@ const Register = () => {
   const axiosSecure = useAxiosSecure();
 
   const [regError, setRegError] = useState('');
-  const [regSuccess, setRegSuccess] = useState('');
+  const [loading, setLoading] = useState(false); // New loading state
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onChange" // This enables live error checking as user types
+  });
 
-  const handleRegister = (data) => {
+  const handleRegister = async (data) => {
     setRegError('');
-    setRegSuccess('');
+    setLoading(true);
 
-    const photoImg = data.photo[0];
+    try {
+      const photoImg = data.photo[0];
+      if (!photoImg) throw new Error("Please upload a profile picture.");
 
-    createUser(data.email, data.password)
-      .then(result => {
-        console.log(result)
+      // 1. Create User in Firebase
+      const result = await createUser(data.email, data.password);
 
-        // Upload image
-        const formData = new FormData();
-        formData.append('image', photoImg);
-        const Img_Api_Url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Img_Upload}`;
-        return axios.post(Img_Api_Url, formData);
-      })
-      .then(res => {
-        const imageUrl = res.data.data.url;
+      // 2. Upload image to ImgBB
+      const formData = new FormData();
+      formData.append('image', photoImg);
+      const Img_Api_Url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Img_Upload}`;
+      const imgRes = await axios.post(Img_Api_Url, formData);
+      const imageUrl = imgRes.data.data.url;
 
-        const userinfo = {
-          displayName: data.name,
-          email: data.email,
-          photoURL: imageUrl,
-        };
+      // 3. Save User to MongoDB
+      const userinfo = {
+        displayName: data.name,
+        email: data.email,
+        photoURL: imageUrl,
+        role: 'user', // default role
+        createdAt: new Date(),
+      };
+      await axiosSecure.post('/users', userinfo);
 
-        return axiosSecure.post('/users', userinfo).then(() => imageUrl);
-      })
-      .then((imageUrl) => {
-        const userProfile = { displayName: data.name, photoURL: imageUrl };
-        return updateUserProfile(userProfile);
-      })
-      .then(() => {
-        setRegSuccess('Registration successful! 🎉');
-        navigate(location?.state || '/');
-      })
-      .catch(error => {
-        console.log("Register error:", error);
-        if (error.code === 'auth/email-already-in-use') {
-          setRegError('Email already registered. Please use another email.');
-        } else {
-          setRegError(error.message);
-        }
-      });
+      // 4. Update Firebase Profile
+      await updateUserProfile({ displayName: data.name, photoURL: imageUrl });
+
+      setLoading(false);
+      navigate(location?.state || '/');
+      
+    } catch (error) {
+      setLoading(false);
+      console.error("Register error:", error);
+      
+      if (error.code === 'auth/email-already-in-use') {
+        setRegError('This email is already registered.');
+      } else if (error.code === 'auth/weak-password') {
+        setRegError('Password is too weak.');
+      } else {
+        setRegError(error.message || "An unexpected error occurred.");
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-100 transition-colors px-4">
-      <title>Registration</title>
-
-      <div className="w-full max-w-lg bg-base-200 backdrop-blur-xl
-      border border-base-300 shadow-2xl rounded-2xl p-8">
-
-        <h3 className="text-3xl font-extrabold text-center text-base-content">
-          Create Your Account
+    <div className="min-h-screen flex items-center justify-center bg-base-100 px-4 py-12">
+      <div className="w-full max-w-lg bg-base-200 border border-base-300 shadow-2xl rounded-3xl p-8">
+        
+        <h3 className="text-3xl font-black text-center text-base-content tracking-tight">
+          Join <span className="text-primary">Digital Life</span>
         </h3>
 
-        <p className="text-center text-base-content/70 my-3">
-          Already have an account?{" "}
-          <Link
-            state={location.state}
-            to="/auth/login"
-            className="text-primary hover:underline"
-          >
-            Login
-          </Link>
+        <p className="text-center text-base-content/60 mt-2 mb-8">
+          Start your journey of sharing and learning.
         </p>
 
-        {/* Global Error */}
+        {/* --- Global Error Alert --- */}
         {regError && (
-          <p className="text-error text-center font-medium mb-4">
-            {regError}
-          </p>
+          <div className="alert alert-error mb-6 rounded-2xl py-3 text-sm flex items-center gap-2">
+            <FiAlertCircle size={20} />
+            <span>{regError}</span>
+          </div>
         )}
 
-        {/* Success Message */}
-        {regSuccess && (
-          <p className="text-success text-center font-medium mb-4">
-            {regSuccess}
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
-
-          {/* Name */}
-          <div>
-            <label className="label text-base-content">Full Name</label>
+        <form onSubmit={handleSubmit(handleRegister)} className="space-y-5">
+          
+          {/* Full Name */}
+          <div className="form-control">
+            <label className="label font-bold text-xs uppercase tracking-widest opacity-60">Full Name</label>
             <input
               type="text"
               {...register("name", { required: "Name is required" })}
-              className="input input-bordered w-full
-            bg-base-100 text-base-content border-base-300"
-              placeholder="Your Name"
+              className={`input input-bordered rounded-xl ${errors.name ? 'input-error' : ''}`}
+              placeholder="John Doe"
             />
-            {errors.name && (
-              <p className="text-error text-sm mt-1">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="text-error text-xs mt-1 font-medium">{errors.name.message}</p>}
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="label text-base-content">Email Address</label>
+          {/* Email Address */}
+          <div className="form-control">
+            <label className="label font-bold text-xs uppercase tracking-widest opacity-60">Email Address</label>
             <input
               type="email"
-              {...register("email", { required: "Email is required" })}
-              className="input input-bordered w-full
-            bg-base-100 text-base-content border-base-300"
-              placeholder="Enter Email"
+              {...register("email", { 
+                required: "Email is required",
+                pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" }
+              })}
+              className={`input input-bordered rounded-xl ${errors.email ? 'input-error' : ''}`}
+              placeholder="name@example.com"
             />
-            {errors.email && (
-              <p className="text-error text-sm mt-1">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-error text-xs mt-1 font-medium">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
-          <div className="relative">
-            <label className="label text-base-content">Password</label>
+          {/* Password with Live Strength Check */}
+          <div className="form-control relative">
+            <label className="label font-bold text-xs uppercase tracking-widest opacity-60">Password</label>
             <input
               type={showPassword ? "text" : "password"}
-              {...register("password")}
-              className="input input-bordered w-full pr-10
-            bg-base-100 text-base-content border-base-300"
-              placeholder="Create Password"
+              {...register("password", { 
+                required: "Password is required",
+                minLength: { value: 6, message: "Minimum 6 characters" },
+                pattern: {
+                  value: /(?=.*[A-Z])(?=.*[a-z])/,
+                  message: "Must include Uppercase & Lowercase"
+                }
+              })}
+              className={`input input-bordered rounded-xl pr-12 ${errors.password ? 'input-error' : ''}`}
+              placeholder="••••••••"
             />
-
-            <span
-              className="absolute right-3 top-9 text-base-content/60 cursor-pointer"
+            <button 
+              type="button" 
               onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-[46px] text-base-content/40 hover:text-primary transition-colors"
             >
-              {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
-            </span>
-
-            {errors.password && (
-              <p className="text-error text-sm mt-1">{errors.password.message}</p>
-            )}
+              {showPassword ? <AiFillEyeInvisible size={22} /> : <AiFillEye size={22} />}
+            </button>
+            {errors.password && <p className="text-error text-xs mt-1 font-medium">{errors.password.message}</p>}
           </div>
 
-          {/* Photo */}
-          <div>
-            <label className="label text-base-content">Upload Photo</label>
+          {/* Photo Upload */}
+          <div className="form-control">
+            <label className="label font-bold text-xs uppercase tracking-widest opacity-60">Profile Photo</label>
             <input
               type="file"
-              {...register("photo")}
-              className="file-input file-input-bordered w-full
-            bg-base-100 text-base-content border-base-300"
+              {...register("photo", { required: "Photo is required" })}
+              className={`file-input file-input-bordered rounded-xl w-full ${errors.photo ? 'file-input-error' : ''}`}
             />
-            {errors.photo && (
-              <p className="text-error text-sm mt-1">{errors.photo.message}</p>
-            )}
+            {errors.photo && <p className="text-error text-xs mt-1 font-medium">{errors.photo.message}</p>}
           </div>
 
-          <button className="btn btn-primary w-full mt-2">
-            Register
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="btn btn-primary w-full rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-primary/20"
+          >
+            {loading ? <span className="loading loading-spinner"></span> : "Create Account"}
           </button>
+          
+          <SocialLogin />
 
-          <div className="pt-2">
-            <SocialLogin />
-          </div>
+          <p className="text-center text-sm font-medium text-base-content/70 mt-4">
+            Already have an account?{" "}
+            <Link to="/auth/login" className="text-primary hover:underline font-bold">Login</Link>
+          </p>
         </form>
       </div>
     </div>
-
   );
 };
 

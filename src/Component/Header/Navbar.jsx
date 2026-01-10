@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
+import { FiMoon, FiSun, FiUser, FiLogOut, FiLayout } from 'react-icons/fi';
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -11,36 +12,24 @@ const Navbar = () => {
   const [role, setRole] = useState(null);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
-  // Sync theme with document attribute
+  // Sync theme with daisyUI and HTML class
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    const localTheme = localStorage.getItem('theme');
-    // daisyUI looks for the data-theme attribute on the html element
-    document.querySelector('html').setAttribute('data-theme', localTheme);
-  }, [theme]);
-
-  const handleToggle = (e) => {
-    if (e.target.checked) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  };
-
-  // Apply saved theme on app load
-  useEffect(() => {
-    const theme = localStorage.getItem('theme') || 'light';
+    document.querySelector('html').setAttribute('data-theme', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, []);
+  }, [theme]);
 
-  // Logout
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
+
   const handleLogOut = () => logOut().catch(() => { });
 
-  // Fetch user info once
+  // Fetch user info and role
   useEffect(() => {
     if (!user?.email) return;
 
@@ -53,191 +42,138 @@ const Navbar = () => {
       .catch(err => console.error(err));
   }, [user, axiosSecure]);
 
-  // Active NavLink style
   const linkStyle = ({ isActive }) =>
-    isActive
-      ? 'font-semibold border-b-2 border-primary pb-1 drop-shadow-sm text-primary'
-      : 'drop-shadow-sm text-base-content hover:text-primary transition-colors duration-200';
+    `relative px-1 py-1 transition-all duration-300 hover:text-primary ${
+      isActive 
+        ? 'text-primary font-bold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full' 
+        : 'text-base-content/70 font-medium'
+    }`;
 
   const navLinks = (
     <>
-      <li>
-        <NavLink to="/" className={linkStyle}>Home</NavLink>
-      </li>
-      <li>
-        <NavLink to="/public-lessons" className={linkStyle}>Public Lessons</NavLink>
-      </li>
-
-      <li>
-        {userInfo?.isPremium ? (
-          <span className="ml-2 font-semibold text-warning">Premium ⭐</span>
-        ) : (
-          <NavLink
-            to="/dashboard/pricing"
-            className="relative inline-block px-5 py-2 font-semibold rounded-lg shadow-md text-center
-                         bg-warning text-warning-content overflow-hidden transition-colors hover:opacity-90"
-          >
-            <span className="absolute inset-0 bg-warning/50 rounded-lg animate-pulse -z-10"></span>
-            Upgrade
+      <li><NavLink to="/" className={linkStyle}>Home</NavLink></li>
+      <li><NavLink to="/public-lessons" className={linkStyle}>Lessons</NavLink></li>
+      <li><NavLink to="/about" className={linkStyle}>About</NavLink></li>
+      {user && (
+        <li>
+          <NavLink to={role === "admin" ? "/dashboard/admin/home" : "/dashboard/user/home"} className={linkStyle}>
+            Dashboard
           </NavLink>
-        )}
-      </li>
+        </li>
+      )}
+
+      <li><NavLink to="/faq" className={linkStyle}>FAQ</NavLink></li>
+      <li><NavLink to="/privacy" className={linkStyle}>Privacy Policy</NavLink></li>
+      <li><NavLink to="/Terms-Conditions" className={linkStyle}>Terms & Conditions</NavLink></li>
     </>
-  )
+  );
 
+  return (
+    <div className="navbar sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-200">
+      
+      {/* --- Navbar Start: Mobile Menu & Logo --- */}
+      <div className="navbar-start">
+        <div className="dropdown">
+          <label tabIndex={0} className="btn btn-ghost lg:hidden p-0 mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </label>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow-2xl bg-base-100 rounded-2xl w-52 gap-2 border border-base-200">
+            {navLinks}
+          </ul>
+        </div>
 
-return (
-  <div className="navbar sticky top-0 z-50 bg-base-100/80 backdrop-blur-lg border-b border-base-300 shadow-sm transition-colors">
+        <Link to="/" className="flex items-center gap-2 group">
+          <img src="/logo.png" alt="Logo" className="w-9 h-9 rounded-full transition-transform group-hover:rotate-[360deg] duration-700" />
+          <span className="hidden md:block font-black text-xl tracking-tighter text-base-content">
+            DIGITAL<span className="text-primary">LIFE</span>
+          </span>
+        </Link>
+      </div>
 
-    {/* LEFT */}
-    <div className="navbar-start">
-      <div className="dropdown">
-        <label tabIndex={0} className="btn btn-ghost lg:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </label>
-
-        {/* MOBILE MENU */}
-        <ul
-          tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100/80 backdrop-blur-md rounded-box z-10 mt-3 w-52 p-2 shadow"
-        >
+      {/* --- Navbar Center: Desktop Links --- */}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="flex items-center gap-8 px-1">
           {navLinks}
-          {!user && (
-            <>
-              <li><Link to="/auth/login">Login</Link></li>
-              <li><Link to="/auth/register">Signup</Link></li>
-            </>
-          )}
         </ul>
       </div>
 
-      <Link to="/">
-        <img
-          src="https://i.ibb.co.com/5WQymhQv/images-removebg-preview.png"
-          alt="Logo"
-          className="w-16 rounded-full"
-        />
-      </Link>
-    </div>
-
-    {/* CENTER */}
-    <div className="navbar-center hidden lg:flex">
-      <ul className="menu menu-horizontal px-1">
-        {navLinks}
-      </ul>
-    </div>
-
-    {/* RIGHT */}
-    <div className="navbar-end flex items-center gap-2">
-      {/* theme controller */}
-      <label className="relative inline-flex items-center cursor-pointer group">
-        {/* Hidden Checkbox */}
-        <input
-          type="checkbox"
-          checked={theme === 'dark'}
-          onChange={handleToggle}
-          className="sr-only"
-        />
-
-        {/* Toggle Track */}
-        <div className={`w-14 h-7 rounded-full shadow-inner transition-colors duration-300 ${theme === 'dark' ? 'bg-gray-700' : 'bg-base-300'
-          }`}></div>
-
-        {/* Toggle Thumb */}
-        <div className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300 flex items-center justify-center ${theme === 'dark' ? 'translate-x-7.5' : 'translate-x-0.5'
-          }`}>
-
-          {/* Sun Icon (Visible in Light Mode) */}
-          <svg
-            aria-label="sun"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className={`absolute w-4 h-4 text-yellow-500 transition-all duration-300 ${theme === 'dark' ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-              }`}
-          >
-            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-            </g>
-          </svg>
-
-          {/* Moon Icon (Visible in Dark Mode) */}
-          <svg
-            aria-label="moon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className={`absolute w-4 h-4 text-blue-400 transition-all duration-300 ${theme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-              }`}
-          >
-            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-            </g>
-          </svg>
-        </div>
-      </label>
-
-      {/* USER */}
-
-      {!user && (
-        <>
-          <Link to="/auth/login" className="btn btn-outline rounded-xl">
-            Login
-          </Link>
-          <Link to="/auth/register" className="btn btn-primary rounded-xl">
-            Signup
-          </Link>
-        </>
-      )}
-
-      {user && (
-        <div className="relative">
-          <img
-            src={user?.photoURL || "https://i.ibb.co/MBtjqXQ/no-img.png"}
-            alt="User"
-            className="w-10 h-10 rounded-full cursor-pointer border border-base-300"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          />
-
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-base-100/80 backdrop-blur-lg shadow-lg rounded-xl p-3 z-20">
-              <p className="font-semibold text-base-content">
-                {user?.displayName}
-              </p>
-
-              <div className="divider my-1"></div>
-
-              {role === "admin" ? (
-                <Link className="btn btn-sm w-full" to="dashboard/admin/profile">
-                  Profile
-                </Link>
-              ) : (
-                <Link className="btn btn-sm w-full" to="dashboard/profile">
-                  Profile
-                </Link>
-              )}
-
-              <Link className="btn btn-sm w-full mt-1" to="/dashboard">
-                Dashboard
-              </Link>
-
-              <button
-                onClick={handleLogOut}
-                className="btn btn-sm btn-outline w-full mt-2"
-              >
-                Log Out
-              </button>
-            </div>
+      {/* --- Navbar End: Actions & Profile --- */}
+      <div className="navbar-end gap-3">
+        
+        {/* Upgrade / Premium Badge */}
+        <div className="hidden sm:block">
+          {userInfo?.isPremium ? (
+            <span className="badge badge-warning badge-outline font-bold gap-1 px-3 py-3">
+              <span className="text-xs">PREMIUM</span> ⭐
+            </span>
+          ) : (
+            <Link to="/dashboard/pricing" className="btn btn-warning btn-sm rounded-full px-5 shadow-sm hover:shadow-warning/20 border-none group">
+              Upgrade
+              <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-white opacity-75"></span>
+            </Link>
           )}
         </div>
-      )}
-    </div>
-  </div>
 
-);
+        {/* Theme Toggle */}
+        <button onClick={toggleTheme} className="btn btn-ghost btn-circle text-lg hover:bg-base-200">
+          {theme === 'light' ? <FiMoon /> : <FiSun className="text-yellow-400" />}
+        </button>
+
+        {/* User Dropdown */}
+        {!user ? (
+          <div className="flex items-center gap-2">
+            <Link to="/auth/login" className="btn btn-ghost btn-sm rounded-lg hidden sm:flex">Login</Link>
+            <Link to="/auth/register" className="btn btn-primary btn-sm rounded-lg shadow-md shadow-primary/20">Signup</Link>
+          </div>
+        ) : (
+          <div className="relative">
+            <div 
+              className="avatar cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img src={user?.photoURL || "https://ui-avatars.com/api/?name=User"} alt="Profile" />
+              </div>
+            </div>
+
+            {dropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)}></div>
+                <div className="absolute right-0 mt-4 w-64 bg-base-100 border border-base-200 shadow-2xl rounded-2xl p-4 z-20 animate-in fade-in zoom-in duration-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="avatar">
+                      <div className="w-10 rounded-full">
+                        <img src={user?.photoURL} alt="User" />
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-sm truncate">{user?.displayName}</p>
+                      <p className="text-[10px] opacity-50 truncate tracking-widest uppercase">{role || 'User'}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-1">
+                    <Link to={role === 'admin' ? '/dashboard/admin/profile' : '/dashboard/profile'} className="btn btn-ghost btn-sm justify-start gap-3 rounded-lg text-sm font-medium">
+                      <FiUser className="text-primary" /> My Profile
+                    </Link>
+                    <Link to="/dashboard" className="btn btn-ghost btn-sm justify-start gap-3 rounded-lg text-sm font-medium">
+                      <FiLayout className="text-primary" /> Dashboard
+                    </Link>
+                    <div className="divider my-1 opacity-50"></div>
+                    <button onClick={handleLogOut} className="btn btn-error btn-outline btn-sm gap-3 rounded-lg mt-1">
+                      <FiLogOut /> Log Out
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Navbar;

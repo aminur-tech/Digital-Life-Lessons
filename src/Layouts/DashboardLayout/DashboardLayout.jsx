@@ -4,12 +4,11 @@ import useRole from "../../Hooks/useRole";
 import useAuth from "../../Hooks/useAuth";
 
 // React Icons
-import { FiMenu, FiHome, FiPlusCircle, FiHeart, FiUser } from "react-icons/fi";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import { FiMenu, FiHome, FiPlusCircle, FiHeart, FiUser, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
+import { MdOutlineLibraryBooks, MdDashboard } from "react-icons/md";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
-
-
+import { IoReorderThreeOutline } from "react-icons/io5";
 
 const DashboardLayout = () => {
     const { user, logOut } = useAuth();
@@ -17,200 +16,156 @@ const DashboardLayout = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
-    // Sync theme with document attribute
     useEffect(() => {
         localStorage.setItem('theme', theme);
-        const localTheme = localStorage.getItem('theme');
-        // daisyUI looks for the data-theme attribute on the html element
-        document.querySelector('html').setAttribute('data-theme', localTheme);
-    }, [theme]);
-
-    const handleToggle = (e) => {
-        if (e.target.checked) {
-            setTheme('dark');
-        } else {
-            setTheme('light');
-        }
-    };
-
-    // Apply saved theme on app load
-    useEffect(() => {
-        const theme = localStorage.getItem('theme') || 'light';
+        document.querySelector('html').setAttribute('data-theme', theme);
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-    }, []);
+    }, [theme]);
 
-    //   user logout
+    const handleToggle = () => {
+        setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    };
+
     const handleLogOut = () => logOut().catch(() => { });
 
+    const navActiveClass = "bg-primary text-primary-content shadow-lg shadow-primary/20 scale-[1.02]";
+    const navDefaultClass = "text-base-content/70 hover:bg-base-300 hover:text-base-content";
+
     return (
-        <div className="drawer lg:drawer-open">
+        <div className="drawer lg:drawer-open bg-base-100 font-sans">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
-            <div className="drawer-content">
+            <div className="drawer-content flex flex-col min-h-screen">
                 {/* Navbar */}
-                <nav className="navbar w-full bg-base-300">
-                    <label
-                        htmlFor="my-drawer-4"
-                        aria-label="open sidebar"
-                        className="btn btn-square btn-ghost"
-                    >
-                        {/* Toggle Icon */}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
-                    </label>
+                <nav className="navbar w-full bg-base-100/70 backdrop-blur-xl sticky top-0 z-40 border-b border-base-200 px-4 py-3">
+                    <div className="flex-none lg:hidden">
+                        <label htmlFor="my-drawer-4" className="btn btn-square btn-ghost">
+                            <IoReorderThreeOutline size={28} />
+                        </label>
+                    </div>
 
-                    <div className="flex justify-between items-center w-full px-4">
-                        <div className="text-xl font-semibold">Digital Life Lessons</div>
+                    <div className="flex-1 px-2 mx-2">
+                        <span className="text-xl font-black tracking-tighter text-primary bg-clip-text">
+                            DIGITAL LIFE LESSONS
+                        </span>
+                    </div>
 
-                        <div className="flex items-center gap-2">
-                            {/* theme controller */}
-                            <label className="relative inline-flex items-center cursor-pointer group">
-                                {/* Hidden Checkbox */}
-                                <input
-                                    type="checkbox"
-                                    checked={theme === 'dark'}
-                                    onChange={handleToggle}
-                                    className="sr-only"
-                                />
+                    <div className="flex items-center gap-4">
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={handleToggle}
+                            className="btn btn-ghost btn-circle text-xl transition-transform hover:rotate-12"
+                        >
+                            {theme === 'light' ? <FiMoon /> : <FiSun className="text-yellow-400" />}
+                        </button>
 
-                                {/* Toggle Track */}
-                                <div className={`w-14 h-7 rounded-full shadow-inner transition-colors duration-300 ${theme === 'dark' ? 'bg-gray-700' : 'bg-base-300'
-                                    }`}></div>
-
-                                {/* Toggle Thumb */}
-                                <div className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300 flex items-center justify-center ${theme === 'dark' ? 'translate-x-7.5' : 'translate-x-0.5'
-                                    }`}>
-
-                                    {/* Sun Icon (Visible in Light Mode) */}
-                                    <svg
-                                        aria-label="sun"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className={`absolute w-4 h-4 text-yellow-500 transition-all duration-300 ${theme === 'dark' ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                                            }`}
-                                    >
-                                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-                                            <circle cx="12" cy="12" r="4"></circle>
-                                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-                                        </g>
-                                    </svg>
-
-                                    {/* Moon Icon (Visible in Dark Mode) */}
-                                    <svg
-                                        aria-label="moon"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        className={`absolute w-4 h-4 text-blue-400 transition-all duration-300 ${theme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-                                            }`}
-                                    >
-                                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-                                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                                        </g>
-                                    </svg>
+                        {/* User Profile */}
+                        <div className="relative">
+                            <div className="avatar cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 hover:scale-105 transition-transform">
+                                    <img src={user?.photoURL || "https://ui-avatars.com/api/?name=User"} alt="Profile" />
                                 </div>
-                            </label>
+                            </div>
 
-                            <div className="tooltip tooltip-left" data-tip={user?.displayName}>
-                                <img
-                                    src={user?.photoURL}
-                                    alt="User"
-                                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
-                                    referrerPolicy="no-referrer"
-                                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                                />
-                                {dropdownOpen && (
-                                    <div className="absolute right-0 mt-3 w-48 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-lg rounded-xl p-3 z-20 transition-colors">
-                                        <p className="font-semibold text-gray-800 dark:text-gray-100">{user?.displayName}</p>
-                                        <div className="divider my-1"></div>
+                            {dropdownOpen && (
+                                <>
+                                    <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)}></div>
+                                    <div className="absolute right-0 mt-4 w-64 bg-base-100 border border-base-200 shadow-2xl rounded-2xl p-4 z-20 animate-in fade-in zoom-in duration-200">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="avatar">
+                                                <div className="w-12 rounded-full">
+                                                    <img src={user?.photoURL} alt="User" />
+                                                </div>
+                                            </div>
+                                            <div className="overflow-hidden">
+                                                <p className="font-bold text-base-content truncate">{user?.displayName}</p>
+                                                <p className="text-xs opacity-60 truncate">{user?.email}</p>
+                                            </div>
+                                        </div>
+                                        <div className="divider my-0 opacity-50"></div>
                                         <button
                                             onClick={handleLogOut}
-                                            className="btn btn-sm btn-outline w-full mt-2"
+                                            className="btn btn-error btn-sm btn-outline w-full mt-4 flex items-center gap-2 rounded-xl"
                                         >
-                                            Log Out
+                                            <FiLogOut /> Log Out
                                         </button>
                                     </div>
-                                )}
-                            </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </nav>
 
-                <div>
+                {/* Main Content Area */}
+                <main className="p-6 md:p-10 flex-grow bg-base-200/30">
                     <Outlet />
-                </div>
+                </main>
             </div>
 
             {/* Sidebar */}
-            <div className="drawer-side is-drawer-close:overflow-visible">
+            <div className="drawer-side z-50">
                 <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
+                <div className="w-72 min-h-full bg-base-100 border-r border-base-200 flex flex-col">
+                    {/* Sidebar Header */}
+                    <div className="p-6 flex items-center gap-3 border-b border-base-200">
+                        <Link
+                            to="/"
+                            className="group flex items-center gap-3 px-2 py-1 transition-all duration-300 ease-in-out"
+                        >
+                            <div className="relative">
+                                {/* Animated Ring Around Logo */}
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
 
-                <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-                    <ul className="menu w-full grow px-2">
-                        <Link to="/">
-                            <img
-                                src="https://i.ibb.co.com/5WQymhQv/images-removebg-preview.png"
-                                alt=""
-                            />
+                                <img
+                                    src="/logo.png"
+                                    alt="Logo"
+                                    className="relative mb-0 rounded-full w-11 h-11 object-cover border-2 border-base-100 shadow-sm transition-transform duration-300 group-hover:scale-110"
+                                />
+                            </div>
+
+                            <div className="flex flex-col justify-center">
+                                <span className="text-xs font-medium uppercase tracking-widest text-base-content/50 group-hover:text-primary transition-colors">
+                                    Back to
+                                </span>
+                                <span className="text-xl font-bold leading-none bg-gradient-to-r from-base-content to-base-content/70 bg-clip-text group-hover:from-primary group-hover:to-primary/80 transition-all">
+                                    Welcome
+                                </span>
+                            </div>
                         </Link>
+                    </div>
 
+                    <ul className="menu p-4 w-full gap-2 grow">
                         {/* USER MENU */}
                         {role === "user" && (
                             <>
+                                <li className="menu-title opacity-50 text-xs font-bold uppercase mt-4 mb-2 tracking-widest">User Dashboard</li>
                                 <li>
-                                    <NavLink
-                                        to="/dashboard"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Dashboard Home"
-                                    >
-                                        <FiHome className="text-lg" />
-                                        <span className="is-drawer-close:hidden">Dashboard Home</span>
+                                    <NavLink to="/dashboard/user/home" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiHome className="text-lg" /> Dashboard Home
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/add-lesson"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Add Lesson"
-                                    >
-                                        <FiPlusCircle className="text-lg" />
-                                        <span className="is-drawer-close:hidden">Add Lesson</span>
+                                    <NavLink to="/dashboard/add-lesson" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiPlusCircle className="text-lg" /> Add Lesson
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/my-lessons"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="My Lessons"
-                                    >
-                                        <MdOutlineLibraryBooks className="text-xl" />
-                                        <span className="is-drawer-close:hidden">My Lessons</span>
+                                    <NavLink to="/dashboard/my-lessons" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <MdOutlineLibraryBooks className="text-lg" /> My Lessons
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/my-favorites"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Favorites"
-                                    >
-                                        <FiHeart className="text-lg" />
-                                        <span className="is-drawer-close:hidden">My Favorites</span>
+                                    <NavLink to="/dashboard/my-favorites" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiHeart className="text-lg" /> My Favorites
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/profile"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Profile"
-                                    >
-                                        <FiUser className="text-lg" />
-                                        <span className="is-drawer-close:hidden">Profile</span>
+                                    <NavLink to="/dashboard/profile" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiUser className="text-lg" /> Profile
                                     </NavLink>
                                 </li>
                             </>
@@ -219,68 +174,51 @@ const DashboardLayout = () => {
                         {/* ADMIN MENU */}
                         {role === "admin" && (
                             <>
-                                <div className="divider is-drawer-close:hidden">Admin Panel</div>
-
+                                <li className="menu-title opacity-50 text-xs font-bold uppercase mt-6 mb-2 tracking-widest text-secondary">Administrator</li>
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/admin"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Admin Home"
-                                    >
-                                        <FiHome className="text-lg" />
-                                        <span className="is-drawer-close:hidden">Admin Home</span>
+                                    <NavLink to="/dashboard/admin/home" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiHome className="text-lg" /> Admin Home
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/admin/manage-users"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Manage Users"
-                                    >
-                                        <AiOutlineUsergroupAdd className="text-xl" />
-                                        <span className="is-drawer-close:hidden">Manage Users</span>
+                                    <NavLink to="/dashboard/admin/manage-users" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <AiOutlineUsergroupAdd className="text-lg" /> Manage Users
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/admin/manage-lessons"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Manage Lessons"
-                                    >
-                                        <MdOutlineLibraryBooks className="text-xl" />
-                                        <span className="is-drawer-close:hidden">Manage Lessons</span>
+                                    <NavLink to="/dashboard/admin/manage-lessons" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <MdOutlineLibraryBooks className="text-lg" /> Manage Lessons
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/admin/reported-lessons"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Reported Lessons"
-                                    >
-                                        <HiOutlineExclamationTriangle className="text-xl" />
-                                        <span className="is-drawer-close:hidden">Reported Lessons</span>
+                                    <NavLink to="/dashboard/admin/reported-lessons" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <HiOutlineExclamationTriangle className="text-lg" /> Reported Lessons
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink
-                                        to="/dashboard/admin/profile"
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Admin Profile"
-                                    >
-                                        <FiUser className="text-lg" />
-                                        <span className="is-drawer-close:hidden">Admin Profile</span>
+                                    <NavLink to="/dashboard/admin/profile" className={({ isActive }) => `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? navActiveClass : navDefaultClass}`}>
+                                        <FiUser className="text-lg" /> Admin Profile
                                     </NavLink>
                                 </li>
                             </>
                         )}
                     </ul>
+
+                    {/* Sidebar Footer */}
+                    <div className="p-4 border-t border-base-200">
+                        <div className="bg-base-200/50 p-4 rounded-2xl flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                {user?.displayName?.charAt(0)}
+                            </div>
+                            <div className="overflow-hidden">
+                                <p className="text-sm font-bold truncate">{user?.displayName}</p>
+                                <span className="badge badge-primary badge-outline badge-xs uppercase">{role}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
