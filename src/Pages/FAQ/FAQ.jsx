@@ -45,6 +45,7 @@ const FAQ = () => {
 
     return (
         <div className="min-h-screen bg-base-200/50 py-20 px-4 relative overflow-hidden">
+            <title>FAQ | Digital Life Lessons</title>
             {/* Subtle Background Decoration */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-[0.03] pointer-events-none">
                 <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>

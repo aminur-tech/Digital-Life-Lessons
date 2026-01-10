@@ -28,6 +28,7 @@ const Privacy = () => {
 
     return (
         <div className="min-h-screen bg-base-200/50 py-12 px-4">
+            <title>Privacy Policy | Digital Life Lessons</title>
             <div className="max-w-4xl mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-16">

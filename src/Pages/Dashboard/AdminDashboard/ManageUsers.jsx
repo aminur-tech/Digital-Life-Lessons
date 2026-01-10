@@ -31,6 +31,7 @@ const ManageUsers = () => {
 
     return (
         <div className="overflow-x-auto">
+            <title>Manage Users | Digital Life Lessons</title>
             <title>Manage Users</title>
             <table className="table w-full">
                 <thead>

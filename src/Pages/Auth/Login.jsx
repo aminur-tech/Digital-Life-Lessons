@@ -53,6 +53,7 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-base-100 px-4 py-10">
+            <title>Login | Digital Life Lessons</title>
             <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-2xl p-8 border border-base-300">
                 
                 <h3 className="text-3xl font-extrabold text-center text-base-content tracking-tight">

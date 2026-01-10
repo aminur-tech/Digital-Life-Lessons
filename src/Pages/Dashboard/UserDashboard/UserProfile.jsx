@@ -74,7 +74,7 @@ const UserProfile = () => {
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
 
-      <title>Profile</title>
+      <title>user profile | Digital Life Lessons</title>
 
       {/* Profile Header */}
       <div className="flex items-center gap-6 bg-base-100 text-base-content p-6 rounded-xl shadow relative">

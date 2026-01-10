@@ -79,7 +79,7 @@ const MyLessons = () => {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-4 space-y-6">
-      <title>My Lessons</title>
+      <title>My Lessons | Digital Life Lessons</title>
 
       <h1 className="text-3xl font-bold text-center mb-6 text-base-content">My Lessons</h1>
 

@@ -39,7 +39,7 @@ const ReportedLessons = () => {
 
   return (
     <div className="p-6 bg-base-200 dark:bg-base-300 min-h-screen text-base-content transition-colors">
-      <title>Report</title>
+      <title>Report | Digital Life Lessons</title>
       <h1 className="text-3xl font-bold mb-6 text-base-content dark:text-base-content">
         Reported Lessons
       </h1>

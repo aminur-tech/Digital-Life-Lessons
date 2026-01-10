@@ -28,7 +28,7 @@ const AuthorProfile = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 transition-colors duration-300">
-      <title>Profile</title>
+      <title>Author Profile</title>
 
       {/* Author Info */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-6 bg-base-100 rounded-2xl shadow-xl border border-base-300 transition-colors">

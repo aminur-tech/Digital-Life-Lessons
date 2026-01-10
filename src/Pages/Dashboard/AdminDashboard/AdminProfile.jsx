@@ -60,6 +60,7 @@ const AdminProfile = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-base-100 shadow-xl rounded-2xl text-base-content border border-base-200 transition-colors duration-300">
+      <title>Admin Profile | Digital Life Lessons</title>
       <h1 className="text-2xl font-bold mb-6">Admin Profile</h1>
 
       {/* Profile Info */}

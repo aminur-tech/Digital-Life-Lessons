@@ -76,6 +76,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-100 px-4 py-12">
+      <title>Register | Digital Life Lessons</title>
       <div className="w-full max-w-lg bg-base-200 border border-base-300 shadow-2xl rounded-3xl p-8">
         
         <h3 className="text-3xl font-black text-center text-base-content tracking-tight">

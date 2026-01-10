@@ -29,6 +29,7 @@ const TermsConditions = () => {
 
     return (
         <div className="min-h-screen bg-base-100 font-sans border-t border-base-200">
+            <title>Terms & Conditions | Digital Life Lessons</title>
             {/* Hero Section */}
             <div className="bg-base-200/50 py-16 border-b border-base-200">
                 <div className="max-w-4xl mx-auto px-6">

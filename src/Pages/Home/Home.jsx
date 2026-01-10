@@ -8,7 +8,7 @@ import MostFavorite from './MostFavorite';
 const Home = () => {
     return (
         <div >
-            <title>Home</title>
+            <title>Home | Digital Life Lessons</title>
             <div className='mb-20 mt-4'>
                 <HeroSlider></HeroSlider>
             </div>

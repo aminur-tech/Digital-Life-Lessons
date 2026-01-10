@@ -6,7 +6,7 @@ const About = () => {
 
     return (
         <div className="bg-base-100 min-h-screen">
-            <title>About Us</title>
+            <title>About Us | Digital Life Lessons</title>
             {/* Hero Section */}
             <section className="relative py-24 md:py-32 overflow-hidden bg-base-100 transition-colors duration-300">
 
