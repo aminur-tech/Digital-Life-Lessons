@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "../../Component/Loading";
+import Loading from "../../Component/Loading/Loading";
+import MostFavoriteSkeleton from "../../Component/Loading/MostFavoriteSkeleton";
 
 const MostFavorite = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,7 +15,7 @@ const MostFavorite = () => {
     }
   });
 
-  if (isLoading) return <Loading />
+  if (isLoading) return <MostFavoriteSkeleton/>
 
   return (
     <div className=" bg-base-100 rounded-xl">

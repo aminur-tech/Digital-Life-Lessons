@@ -4,7 +4,7 @@ import Home from "../Pages/Home/Home";
 import AuthLayouts from "../Layouts/AuthLayouts/AuthLayouts";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
-import Error from "../Component/Error"
+import Error from "../Component/Error/Error"
 import DashboardLayout from "../Layouts/DashboardLayout/DashboardLayout";
 import DashboardHome from "../Pages/Dashboard/UserDashboard/DashboardHome";
 import AddLesson from "../Pages/Dashboard/UserDashboard/AddLesson";

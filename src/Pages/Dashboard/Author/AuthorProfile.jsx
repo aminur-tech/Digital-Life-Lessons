@@ -21,7 +21,7 @@ const AuthorProfile = () => {
   }, [axiosSecure, email]);
 
   if (!authorData) return (
-    <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-300">
+    <div className="flex justify-center items-center h-screen text-base-content">
       Loading author profile...
     </div>
   );

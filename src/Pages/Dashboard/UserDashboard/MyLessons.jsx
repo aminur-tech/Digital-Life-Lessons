@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import useAuth from '../../../Hooks/useAuth';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
-import Loading from '../../../Component/Loading';
+import Loading from '../../../Component/Loading/Loading';
 
 const MyLessons = () => {
   const { user } = useAuth();

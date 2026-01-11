@@ -9,6 +9,7 @@ import { MdOutlineLibraryBooks, MdDashboard } from "react-icons/md";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
 import { IoReorderThreeOutline } from "react-icons/io5";
+import HeaderMarquee from "../../Component/Marque/HeaderMarquee";
 
 const DashboardLayout = () => {
     const { user, logOut } = useAuth();
@@ -48,10 +49,21 @@ const DashboardLayout = () => {
                         </label>
                     </div>
 
-                    <div className="flex-1 px-2 mx-2">
-                        <span className="text-xl font-black tracking-tighter text-primary bg-clip-text">
-                            DIGITAL LIFE LESSONS
-                        </span>
+                    <div className="flex-1 flex items-center overflow-hidden">
+                        {/* STATIC BRAND NAME */}
+                        <div className="px-2 shrink-0">
+                            <span className="text-xl md:text-2xl font-black tracking-tighter text-primary">
+                                DIGITAL LIFE LESSONS
+                            </span>
+                        </div>
+
+                        {/* VERTICAL DIVIDER */}
+                        <div className="hidden md:block h-8 w-[1.5px] bg-base-300 mx-4 opacity-50"></div>
+
+                        {/* SMOOTH SCROLLING MARQUEE */}
+                        <div className="flex-1 overflow-hidden hidden sm:block">
+                            <HeaderMarquee />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-4">

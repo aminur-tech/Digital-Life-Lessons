@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { Lock, Unlock } from "lucide-react";
 import { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
+import FeaturedSkeleton from "../../Component/Loading/FeaturedSkeleton";
 
 const FeaturedLessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -13,7 +14,7 @@ const FeaturedLessons = () => {
   const [visibleCount, setVisibleCount] = useState(4);
 
   // Fetch featured lessons
-  const { data: featured = [] } = useQuery({
+  const { data: featured = [] , isPending} = useQuery({
     queryKey: ["featuredLessons"],
     queryFn: async () => {
       const res = await axiosSecure.get("/lessons/featured");
@@ -23,15 +24,20 @@ const FeaturedLessons = () => {
     refetchOnWindowFocus: true,
   });
 
+  
+  
   // Get user premium status
   useEffect(() => {
     if (!user?.email) return;
     axiosSecure
-      .get(`/users/premium/${user.email}`)
-      .then(res => setUserIsPremium(res.data.isPremium))
-      .catch(err => console.error(err));
+    .get(`/users/premium/${user.email}`)
+    .then(res => setUserIsPremium(res.data.isPremium))
+    .catch(err => console.error(err));
   }, [user, axiosSecure]);
-
+  
+  if (isPending) {
+    return <FeaturedSkeleton/>;
+  }
   const displayedLessons = featured.slice(0, visibleCount);
 
   const handleSeeMore = () => {

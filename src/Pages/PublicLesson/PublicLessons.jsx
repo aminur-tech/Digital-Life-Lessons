@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { Lock, Unlock, Search, Filter } from "lucide-react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import axios from "axios";
+import PublicLessonsSkeleton from "../../Component/Loading/PublicLessonsSkeleton";
 
 const PublicLessons = () => {
   const { user } = useAuth();
@@ -12,7 +13,8 @@ const PublicLessons = () => {
   const [lessons, setLessons] = useState([]);
   const [userIsPremium, setUserIsPremium] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
-  
+  const [loading, setLoading] = useState(true);
+
   // New States for Search and Sort
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
@@ -27,14 +29,21 @@ const PublicLessons = () => {
 
   useEffect(() => {
     axios
-      .get("https://digital-life-lessons-server-seven.vercel.app/lessons/public")
-      .then(res => setLessons(res.data))
-      .catch(err => console.error("Failed to load lessons:", err));
+      .get("https://digital-life-lessons-server-nu.vercel.app/lessons/public")
+      .then(res =>{ 
+        setLessons(res.data);
+        setLoading(false);
+      })
+
   }, []);
+
+  if (loading) {
+    return <PublicLessonsSkeleton />;
+  }
 
   // Logic for Filtering and Sorting
   const filteredAndSortedLessons = lessons
-    .filter(lesson => 
+    .filter(lesson =>
       lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lesson.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -67,15 +76,15 @@ const PublicLessons = () => {
             <h3 className="flex items-center gap-2 font-bold mb-4 text-lg">
               <Filter className="w-5 h-5" /> Filter Results
             </h3>
-            
+
             {/* Search Input */}
             <div className="space-y-2 mb-6">
               <label className="text-sm font-semibold opacity-70 uppercase tracking-wider">Search</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-50" />
-                <input 
-                  type="text" 
-                  placeholder="Find wisdom..." 
+                <input
+                  type="text"
+                  placeholder="Find wisdom..."
                   className="input input-bordered w-full pl-10 bg-base-100 rounded-xl"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -86,7 +95,7 @@ const PublicLessons = () => {
             {/* Sort Dropdown */}
             <div className="space-y-2">
               <label className="text-sm font-semibold opacity-70 uppercase tracking-wider">Sort By</label>
-              <select 
+              <select
                 className="select select-bordered w-full bg-base-100 rounded-xl"
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
@@ -152,8 +161,8 @@ const PublicLessons = () => {
                         </div>
                       </div>
 
-                      <Link 
-                        to={`/lessons/${lesson._id}`} 
+                      <Link
+                        to={`/lessons/${lesson._id}`}
                         className="btn btn-outline btn-primary w-full mt-4 rounded-xl"
                         disabled={locked}
                       >

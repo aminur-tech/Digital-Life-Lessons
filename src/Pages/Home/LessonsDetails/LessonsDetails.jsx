@@ -10,6 +10,7 @@ import { useParams } from "react-router";
 import { Eye, Clock, Calendar, Lock } from "lucide-react";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
+import LessonSkeleton from "../../../Component/Loading/LessonSkeleton";
 
 const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -38,12 +39,8 @@ const LessonsDetails = () => {
   }, [id, user, axiosSecure]);
 
   if (!lesson)
-    return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-        <p className="text-base-content/70">Loading lesson details...</p>
-      </div>
-    );
+    return <LessonSkeleton/>;
+
 
   const isPremiumContent =
     lesson.premium === true || lesson.accessLevel === "premium";

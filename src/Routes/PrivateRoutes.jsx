@@ -1,7 +1,8 @@
 import React from 'react';
 import useAuth from '../Hooks/useAuth';
-import Loading from '../Component/Loading';
+
 import { Navigate, useLocation } from 'react-router';
+import Loading from '../Component/Loading/Loading';
 
 const PrivateRoutes = ({children}) => {
     const{loading, user} = useAuth()
@@ -9,7 +10,7 @@ const PrivateRoutes = ({children}) => {
     // console.log('....', location)
 
     if(loading){
-        return <Loading></Loading>
+        return <Loading/>
     }
 
     if(!user){
