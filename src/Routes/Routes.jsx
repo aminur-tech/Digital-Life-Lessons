@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import HomeLayouts from "../Layouts/HomeLayouts/HomeLayouts";
-import Home from "../Pages/Home/Home";
+import Home from "../Pages/Home/Home/Home";
 import AuthLayouts from "../Layouts/AuthLayouts/AuthLayouts";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
@@ -28,6 +28,8 @@ import About from "../Pages/About/About";
 import FAQ from "../Pages/FAQ/FAQ";
 import Privacy from "../Pages/Privacy Policy/Privacy";
 import TermsConditions from "../Pages/Terms & Conditions/TermsConditions";
+import Contact from "../Pages/Contact/Contact";
+import CommunityGuidelines from "../Pages/Community/CommunityGuidelines";
 
 
 export const router = createBrowserRouter([
@@ -56,6 +58,14 @@ export const router = createBrowserRouter([
       {
         path: 'Terms-Conditions',
         element: <TermsConditions/>
+      },
+      {
+        path: 'community',
+        element: <CommunityGuidelines/>
+      },
+      {
+        path: 'contact',
+        element: <Contact/>
       },
       {
         path: 'lessons/:id',

@@ -73,7 +73,7 @@ const LessonsDetails = () => {
   };
 
   return (
-    <div className="text-base-content p-1 transition-colors duration-300">
+    <div className="text-base-content p-1 transition-colors duration-300 md:w-11/12 mx-auto">
       <div className="lg:grid lg:grid-cols-3 lg:gap-10">
         <title>{lesson.title} | Digital Life Lessons</title>
         

@@ -56,7 +56,7 @@ const About = () => {
             </section>
 
             {/* Mission & Vision Section */}
-            <section className="py-20 container mx-auto px-6">
+            <section className="py-20 md:w-11/12 mx-auto ">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
@@ -89,8 +89,8 @@ const About = () => {
             </section>
 
             {/* Core Features / What We Offer */}
-            <section className="py-16 bg-base-200">
-                <div className="container mx-auto px-6">
+            <section className="py-16 bg-base-200 ">
+                <div className="md:w-11/12 mx-auto">
                     <h2 className="text-3xl font-bold text-center mb-12">Why Choose Digital Life Lessons?</h2>
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="card bg-base-100 shadow-xl">

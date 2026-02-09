@@ -63,7 +63,7 @@ const PublicLessons = () => {
   };
 
   return (
-    <div className="my-10">
+    <div className="my-10 md:w-11/12 mx-auto">
       <title>Public Lessons | Digital Life Lessons</title>
       <h1 className="text-3xl md:text-5xl font-black mb-12 text-center text-base-content tracking-tight">
         Browse <span className="text-primary">Life Lessons</span>
