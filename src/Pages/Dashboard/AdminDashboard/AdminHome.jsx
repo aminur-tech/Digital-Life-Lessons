@@ -151,7 +151,7 @@ const AdminHome = () => {
 
 // Card Component
 const Card = ({ title, value, color }) => (
-  <div className={`p-6 rounded shadow text-white ${color}`}>
+  <div className={`p-6 rounded shadow text-base-content ${color}`}>
     <h3 className="text-lg font-medium">{title}</h3>
     <p className="text-3xl font-bold mt-2">{value}</p>
   </div>
@@ -159,7 +159,7 @@ const Card = ({ title, value, color }) => (
 
 // ChartCard Component using Recharts
 const ChartCard = ({ title, data, dataKey }) => (
-  <div className="p-4 bg-white dark:bg-gray-800 shadow rounded text-gray-900 dark:text-gray-100">
+  <div className="p-4 bg-base-100 dark:bg-base-200 shadow rounded text-base-content">
     <title>Dashboard | Home</title>
     <h3 className="text-lg font-semibold mb-3">{title}</h3>
     <ResponsiveContainer width="100%" height={250}>

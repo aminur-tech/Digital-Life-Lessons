@@ -2,53 +2,75 @@ import React from 'react';
 
 const PublicLessonsSkeleton = () => {
   return (
-    <div className="my-10 animate-pulse">
+    <div className="min-h-screen py-10 px-4 md:px-0 md:w-11/12 mx-auto animate-pulse">
+      {/* HEADER SKELETON */}
+      <div className="flex flex-col items-center mb-16 space-y-4">
+        <div className="h-12 bg-base-300 rounded-2xl w-1/2 md:w-1/3"></div>
+        <div className="h-4 bg-base-300 rounded-full w-1/3 opacity-50"></div>
+      </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-10">
         {/* SIDEBAR SKELETON */}
-        <aside className="w-full md:w-64 space-y-8 shrink-0">
-          <div className="p-6 bg-base-200 rounded-2xl border border-base-300 space-y-6">
-            <div className="h-6 bg-base-300 rounded w-1/2 mb-4"></div>
-            {/* Search Input Skeleton */}
-            <div className="space-y-2">
-              <div className="h-3 bg-base-300 rounded w-1/4"></div>
-              <div className="h-12 bg-base-300 rounded-xl w-full"></div>
+        <aside className="w-full lg:w-80 space-y-6 shrink-0">
+          {/* Main Filter Card */}
+          <div className="p-6 bg-base-200/50 rounded-[2rem] border border-base-300 space-y-8">
+            <div className="h-6 bg-base-300 rounded-lg w-1/2 mb-2"></div>
+            
+            {/* Search Input */}
+            <div className="space-y-3">
+              <div className="h-3 bg-base-300 rounded w-1/4 opacity-50"></div>
+              <div className="h-12 bg-base-300 rounded-2xl w-full"></div>
             </div>
-            {/* Sort Dropdown Skeleton */}
-            <div className="space-y-2">
-              <div className="h-3 bg-base-300 rounded w-1/4"></div>
-              <div className="h-12 bg-base-300 rounded-xl w-full"></div>
+
+            {/* Sort Dropdown */}
+            <div className="space-y-3">
+              <div className="h-3 bg-base-300 rounded w-1/4 opacity-50"></div>
+              <div className="h-12 bg-base-300 rounded-2xl w-full"></div>
+            </div>
+
+            {/* Category Chips */}
+            <div className="space-y-3">
+              <div className="h-3 bg-base-300 rounded w-1/4 opacity-50"></div>
+              <div className="flex flex-wrap gap-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-8 bg-base-300 rounded-full w-16"></div>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Stats Card Skeleton */}
+          <div className="h-32 bg-base-300/40 rounded-[2rem] w-full border border-base-300"></div>
         </aside>
 
         {/* MAIN GRID SKELETON */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div key={n} className="bg-base-100 rounded-2xl border border-base-300 overflow-hidden">
+              <div key={n} className="bg-base-100 rounded-[2rem] border border-base-200 overflow-hidden shadow-sm">
                 {/* Image Area */}
-                <div className="h-48 bg-base-300 w-full"></div>
+                <div className="h-56 bg-base-300 w-full relative">
+                  <div className="absolute top-4 left-4 h-6 bg-base-200 rounded-full w-20"></div>
+                </div>
                 
-                <div className="p-5 space-y-4">
+                <div className="p-6 space-y-6">
                   {/* Title and Description */}
-                  <div className="h-6 bg-base-300 rounded w-3/4"></div>
-                  <div className="space-y-2">
-                    <div className="h-3 bg-base-300 rounded w-full"></div>
-                    <div className="h-3 bg-base-300 rounded w-5/6"></div>
-                  </div>
-
-                  {/* Author Section */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-base-200">
-                    <div className="w-10 h-10 rounded-full bg-base-300"></div>
-                    <div className="flex-1 space-y-2">
-                      <div className="h-3 bg-base-300 rounded w-1/2"></div>
-                      <div className="h-2 bg-base-300 rounded w-1/4"></div>
+                  <div className="space-y-3">
+                    <div className="h-6 bg-base-300 rounded-lg w-3/4"></div>
+                    <div className="space-y-2">
+                      <div className="h-3 bg-base-300 rounded-full w-full opacity-60"></div>
+                      <div className="h-3 bg-base-300 rounded-full w-5/6 opacity-60"></div>
                     </div>
                   </div>
 
-                  {/* Button */}
-                  <div className="h-10 bg-base-300 rounded-xl w-full mt-2"></div>
+                  {/* Footer Section */}
+                  <div className="flex items-center justify-between pt-4 border-t border-dashed border-base-300">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-base-300"></div>
+                      <div className="h-3 bg-base-300 rounded w-20"></div>
+                    </div>
+                    <div className="h-8 bg-base-300 rounded-xl w-16"></div>
+                  </div>
                 </div>
               </div>
             ))}

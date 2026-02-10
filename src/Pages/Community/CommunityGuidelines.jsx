@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   FiEdit3, 
@@ -10,6 +10,8 @@ import {
   FiAlertTriangle,
   FiZap 
 } from 'react-icons/fi';
+import Lenis from '@studio-freight/lenis';
+import DeveloperPopup from '../Home/DeveloperPopup/DeveloperPopup';
 
 // Animation Variants
 const containerVariants = {
@@ -30,6 +32,31 @@ const itemVariants = {
 };
 
 const CommunityGuidelines = () => {
+  
+  // scroll using lenis
+  useEffect(() => {
+      document.title = "About | Digital Life Lessons";
+  
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => t,
+        smooth: true,
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smoothTouch: true,
+      });
+  
+      const raf = (time) => {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      };
+  
+      requestAnimationFrame(raf);
+  
+      return () => lenis.destroy();
+    }, []);
+
+
   const mainRules = [
     {
       icon: <FiEdit3 />,
@@ -184,6 +211,7 @@ const CommunityGuidelines = () => {
           </button>
         </div>
       </section>
+      <DeveloperPopup/>
     </div>
   );
 };

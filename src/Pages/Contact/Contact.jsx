@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMail, FiPhone, FiGithub, FiLinkedin, FiSend, FiMapPin } from "react-icons/fi";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import Lenis from "@studio-freight/lenis";
+import DeveloperPopup from "../Home/DeveloperPopup/DeveloperPopup";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -11,6 +13,32 @@ const fadeUp = {
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  // scroll using lenis
+  useEffect(() => {
+      document.title = "Contact | Digital Life Lessons";
+  
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => t,
+        smooth: true,
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smoothTouch: true,
+      });
+  
+      const raf = (time) => {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      };
+  
+      requestAnimationFrame(raf);
+  
+      return () => lenis.destroy();
+    }, []);
+
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -152,6 +180,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+      <DeveloperPopup/>
     </section>
   );
 };
