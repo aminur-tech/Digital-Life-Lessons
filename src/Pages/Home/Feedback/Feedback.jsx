@@ -62,7 +62,7 @@ const Feedback = () => {
         </div>
 
         {/* Slider Section */}
-        <div className="feedback-slider-container relative px-4 lg:px-10">
+        <div className="feedback-slider-container relative px-4 lg:px-10 overflow-x-hidden">
           <Slider {...settings}>
             {testimonials.map((item) => (
               <div key={item.id} className="px-3 pb-12">

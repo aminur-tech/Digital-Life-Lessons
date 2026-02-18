@@ -24,10 +24,13 @@ const PublicLessons = () => {
   useEffect(() => {
     document.title = "Lessons | Digital Life Lessons";
     const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+     lenis.scrollTo(0);
     const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
     return () => lenis.destroy();
   }, []);
+
+ 
 
   useEffect(() => {
     if (user?.email) {

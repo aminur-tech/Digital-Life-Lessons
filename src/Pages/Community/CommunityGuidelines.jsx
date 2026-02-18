@@ -45,6 +45,8 @@ const CommunityGuidelines = () => {
         gestureDirection: "vertical",
         smoothTouch: true,
       });
+
+      lenis.scrollTo(0);
   
       const raf = (time) => {
         lenis.raf(time);

@@ -68,14 +68,14 @@ const HeroSlider = () => {
 
 
   return (
-    <div className="relative overflow-hidden p-1">
+    <div className="relative overflow-hidden">
       <Slider {...settings} className="hero-slider">
         {slides.map((slide, index) => (
           <div key={index} className="outline-none">
             {/* Split Layout Container */}
             <div className={`relative min-h-[80vh] flex items-center bg-gradient-to-br ${slide.gradient} `}>
 
-              <div className="md:w-11/12 mx-auto flex justify-between items-center flex-col lg:flex-row gap-10 md:px-6">
+              <div className="md:w-11/12 mx-auto flex justify-between items-center flex-col lg:flex-row gap-10 p-2 md:px-6">
 
                 {/* LEFT CONTENT */}
                 <div className="order-2 md:order-1 text-left z-10 animate-fade-in-left">
@@ -114,7 +114,7 @@ const HeroSlider = () => {
                   <div className="absolute -inset-4 bg-primary/20 rounded-[2rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500"></div>
 
                   {/* The Main Frame */}
-                  <div className="relative overflow-hidden rounded-[2rem] border-4 border-white/20 bg-gray-900 shadow-2xl transform rotate-2 group-hover:rotate-0 transition-transform duration-500">
+                  <div className="relative overflow-hidden rounded-[2rem] border-4 border-white/20 bg-gray-900 shadow-2xl transform md:rotate-2 group-hover:rotate-0 transition-transform duration-500">
                     <img
                       src={slide.img}
                       alt={slide.title}

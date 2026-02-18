@@ -18,6 +18,7 @@ const Contact = () => {
   // scroll using lenis
   useEffect(() => {
       document.title = "Contact | Digital Life Lessons";
+      
   
       const lenis = new Lenis({
         duration: 1.2,
@@ -27,6 +28,7 @@ const Contact = () => {
         gestureDirection: "vertical",
         smoothTouch: true,
       });
+      lenis.scrollTo(0);
   
       const raf = (time) => {
         lenis.raf(time);

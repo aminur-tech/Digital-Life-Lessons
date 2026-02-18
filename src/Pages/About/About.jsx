@@ -28,6 +28,8 @@ const About = () => {
             wheelMultiplier: 1,
         });
 
+        lenis.scrollTo(0); // Scroll to top on page load
+
         const raf = (time) => {
             lenis.raf(time);
             requestAnimationFrame(raf);
@@ -83,7 +85,7 @@ const About = () => {
 
             {/* --- STATS BENTO GRID --- */}
             <section className="py-20 md:w-11/12 mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
                     {stats.map((stat, index) => (
                         <div
                             key={index}
@@ -91,7 +93,7 @@ const About = () => {
                             data-aos-delay={index * 100}
                             className="group p-8 bg-base-200/50 rounded-[2.5rem] border border-base-300 hover:bg-base-100 hover:shadow-2xl transition-all duration-500"
                         >
-                            <div className={`text-3xl mb-4 ${stat.color} group-hover:scale-125 transition-transform duration-500`}>
+                            <div className={`text-3xl mb-2 ${stat.color} group-hover:scale-125 transition-transform duration-500 flex items-center justify-center w-16 h-16 rounded-2xl bg-base-100 shadow-inner mx-auto`}>
                                 {stat.icon}
                             </div>
                             <h3 className="text-4xl font-black mb-1 leading-none">{stat.value}</h3>
@@ -102,7 +104,7 @@ const About = () => {
             </section>
 
             {/* --- CORE PHILOSOPHY (Zig-Zag Format) --- */}
-            <section className="py-24 md:w-11/12 mx-auto space-y-32">
+            <section className="py-24 px-2 text-center md:text-left md:w-11/12 mx-auto space-y-32">
                 {/* Part 1 */}
                 {/* --- Part 1: Curation --- */}
                 <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -112,7 +114,7 @@ const About = () => {
                         <p className="text-lg opacity-70 mb-8 leading-relaxed">
                             Most digital content is designed for consumption. We design for retention. Our structured lesson format ensures your realizations don't just sit in a feed.
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-1 md:gap-4 justify-items-center-safe">
                             {["Structured Data", "Actionable Steps"].map((text, i) => (
                                 <div key={i} className="flex items-center gap-3 font-bold opacity-80">
                                     <FiCheckCircle className="text-primary" /> {text}
@@ -136,7 +138,7 @@ const About = () => {
                 </div>
 
                 {/* --- Part 2: Privacy --- */}
-                <div className="flex flex-col lg:flex-row-reverse items-center gap-16 ">
+                <div className="flex flex-col lg:flex-row-reverse items-center gap-16 p-2 ">
                     <div className="lg:w-1/2" data-aos="fade-left">
                         <span className="text-secondary font-bold tracking-[0.3em] uppercase text-sm mb-4 block">02. Privacy</span>
                         <h2 className="text-4xl md:text-5xl font-black mb-6">Your Mind, <br /><span className="text-secondary">Your Rules.</span></h2>
