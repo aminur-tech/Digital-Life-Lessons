@@ -11,6 +11,7 @@ import { Eye, Clock, Calendar, Lock } from "lucide-react";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
 import LessonSkeleton from "../../../Component/Loading/LessonSkeleton";
+import Lenis from "@studio-freight/lenis";
 
 const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -21,6 +22,31 @@ const LessonsDetails = () => {
   const [similarLessons, setSimilarLessons] = useState([]);
   const [isPremium, setIsPremium] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
+
+  // scroll using lenis
+    useEffect(() => {
+        document.title = "About | Digital Life Lessons";
+    
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => t,
+          smooth: true,
+          direction: "vertical",
+          gestureDirection: "vertical",
+          smoothTouch: true,
+        });
+  
+        lenis.scrollTo(0);
+    
+        const raf = (time) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+    
+        requestAnimationFrame(raf);
+    
+        return () => lenis.destroy();
+      }, []);
 
   useEffect(() => {
     if (!id) return;
